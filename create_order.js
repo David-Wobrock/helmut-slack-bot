@@ -17,6 +17,7 @@ create_order.startCreateOrderConversation = function(message, conversation) {
 
 function askForTitle(conversation) {
     conversation.ask('What is the description of your order?', function(response, conversation) {
+
         console.log("Title: " + response.text);
         var orderId = db.createOrder(response.text);
 
@@ -28,6 +29,7 @@ function askForTitle(conversation) {
 function askToMentionPeople(orderId, conversation) {
     conversation.ask("Mention all the people you will be able to take part of your order with @... @...", function(response, conversation) {
         db.orders[orderId].owner = response.user;
+
         console.log("You mentionend: " + response);
 		console.log(response);
         if(response.text.trim().length === 0) {
@@ -44,8 +46,8 @@ function askToMentionPeople(orderId, conversation) {
                 conversation.say('Sorry, we dont know who ' + mentionedPersons[i] + " is :(");
                 continue;
             }
-			console.log("ADDING TO ORDER: " + mentionedPersons[i]);
-			db.addToOrder(orderId, mentionedPersons[i]);
+			console.log("ADDING TO ORDER: " + mentionedPersons[i].substr(2,9));
+			db.addToOrder(orderId, mentionedPersons[i].substr(2,9));
 		}
 
         conversation.next();
@@ -62,6 +64,8 @@ function askForPredefinedOption(orderId, conversation) {
             for (var i = 0; i < mentionendPersons; ++i) {
                 console.log("send to " + mentionendPersons[i]);
             }
+            conversation.next();
+            return;
         } else {
             if(response.text.trim().length > 0){
                 db.orders[orderId].options.push(response.text);
