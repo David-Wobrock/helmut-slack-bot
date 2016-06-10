@@ -3,6 +3,35 @@ var db = require(path.join(__dirname, 'db.js'));
 
 var formatter = {};
 
+formatter.orderToStringPretty = function(order){
+	var orderstr = '';
+	orderstr += '• ID: ' + order.id + '\n';
+	orderstr += '• Description: ' + order.title + '\n';
+	orderstr += '• Invited users: \n';
+	for (var i = 0; i < order.targets.length; i++) {
+		orderstr += '\t• <@' + order.targets[i].name + '>\n';
+	}
+	orderstr += '• Possible choices: \n';
+	for (var i = 0; i < order.options.length; i++) {
+		orderstr += '\t• ' + parseInt(parseInt(i)+1) + '. ' + order.options[i] + '\n';
+	}
+	return orderstr;
+}
+
+formatter.receivedOrder = function(order) {
+	var str = 'You received an order from <@' + order.owner + '>!\n';
+	str += "*" + order.title + "*\n";
+	str += "The order id is: " + order.id + '\n';
+
+	str += "The predefined options are:\n";
+	for (var i = 0; i < order.options.length; ++i) {
+		str += '\t• ' + order.options[i] + '\n';
+	}
+
+	return str;
+}
+
+
 formatter.formatCollectedReplies = function(orderId, replies) {
 	var resultStr = "Here are the current replies to order #" + orderId + "\n";
 	var options = [];
@@ -48,7 +77,20 @@ formatter.formatCollectedReplies = function(orderId, replies) {
 }
 
 formatter.help_message = function() {
-	return "HELP MSG";
+	return "Hi! I'm helmut, the waiter bot. I will help you organize meals in your team.\n\
+Here is how I work. I am very easy to use, you will see :)\n\
+My commands:\n\
+• help - see this help. Write this command when you need some reminder about how I work\n\
+• order - this takes you to the process of creating a new order for your colleagues\n\
+• reply - reply do an order, either as one of this form:\n\
+\t• reply _number_ (_choose a predefined option of the last received order_)\n\
+\t• reply _my custom option_ (_replying to the last order you received_)\n\
+\t• reply <_id_> _my custom order_ (_specifying the order_)\n\
+• collect [_id_] - collect the replies of the specified order (by id), or by the last one you made when no _id_ specified\n\
+• close [_id_] - closes an order. Nobody can reply to it anymore! You are going to store and buy the stuff\n\
+• notify [_id_] - notifies all invited colleagues that their stuff has arrived at the office. You are back!\n\
+• show - display all your current orders you made and you received\
+";
 };
 
 module.exports = formatter;
