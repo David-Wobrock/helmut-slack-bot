@@ -70,6 +70,7 @@ db.getOrdersOfUser = function(userId){
 
 db.orderToStringPretty = function(order){
 	var orderstr = '';
+	orderstr += 'ID: ' + order.id + '\n';
 	orderstr += 'Title: ' + order.title + '\n';
 	orderstr += 'Invited Users: \n';
 	for (var i = 0; i < order.targets.length; i++) {
