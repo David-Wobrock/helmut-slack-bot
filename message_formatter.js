@@ -41,7 +41,7 @@ formatter.formatCollectedReplies = function(orderId, replies) {
 
 	// OUTPUT
 	for (var i = 0; i < options.length; ++i) {
-		resultStr += "- " + options[i].text + " (" + options[i].counter + " times)";
+		resultStr += "- " + options[i].text + " (" + options[i].counter + " times)\n";
 	}
 
 	return resultStr;
