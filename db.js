@@ -15,7 +15,8 @@ db.createOrder = function(title) {
         'targets': [],
         'options': [],
 		'status': 'OPEN', // or CLOSED
-		'replies': []
+		'replies': [],
+		'timestamp': -1,
     };
     return id;
 };
@@ -75,6 +76,41 @@ db.getOrdersOfUser = function(userId){
 	}
 
 	return ordersofuser;
+}
+db.getAllOrdersToReply = function(userId){
+	var ordersofuser = [];
+	for(var id in db.orders){
+		var cord = db.orders[id];
+		console.log("KAHSFJLKASHFJK");
+		console.log(cord.targets.length);
+		console.log(cord);
+		for(var i = 0; i < cord.targets.length; i++){
+			console.log("TARGET: ")
+			console.log(db.orders[id].targets[i]);
+			if(cord.targets[i].name == userId && cord.status == 'OPEN'){
+				ordersofuser.push(cord);
+			}
+		}
+	}
+
+	return ordersofuser;
+
+}
+db.getLastOrderForReply = function(userId){
+	var orders = db.getAllOrdersToReply(userId);
+
+	console.log(orders);
+	var latestTime = 0;
+	var latestOrder;
+	for(var i = 0 ; i < orders.length; i++){
+		if(orders[i].timestamp > latestTime){
+			latestTime = orders[i].timestamp;
+			latestOrder = orders[i];
+		}
+	}
+	return latestOrder;
+
+
 }
 
 db.orderToStringPretty = function(order){

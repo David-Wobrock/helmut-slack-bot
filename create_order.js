@@ -104,14 +104,19 @@ function showOrderSummaryAndConfirm(orderId, conversation){
             conversation.next();
             //Handle Sending and Collecting data
             conversation.say("Sending...")
+            db.orders[orderId].timestamp = new Date().getTime();
             for (var i = 0; i < order.targets.length; ++i) {
                 conversation.task.bot.startPrivateConversation({'user': order.targets[i].name,}, function(err, conversation) {
-                    conversation.say("ORDER INCOMING from <@" + order.owner + ">");
+                    conversation.say("<@" + order.owner + "> Asks, if you want anything...");
                     orderstr = "";
+                    orderstr += order.title + "\n";
                     orderstr += "ID: " + order.id + "\n";
-                    orderstr += "Title: "+ order.title + "\n";
-                    for(var i = 0; i < order.options.length; i++){
-                        orderstr += i + ": " + order.options[i] + "\n";
+                    if(order.options.length == 0){
+                        orderstr += "No predefined options, choose your own."
+                    }else {
+                        for (var i = 0; i < order.options.length; i++) {
+                            orderstr += i + ": " + order.options[i] + "\n";
+                        }
                     }
 
                     conversation.say(orderstr);
@@ -119,7 +124,6 @@ function showOrderSummaryAndConfirm(orderId, conversation){
                     conversation.next();
                 });
             }
-            conversation.say("Done!");
         }else{// remove the stuff;
             conversation.next();
             conversation.say("Order Deleted...");

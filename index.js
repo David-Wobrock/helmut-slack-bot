@@ -52,11 +52,34 @@ controller.hears(['collect'], 'direct_message', function(bot, message) {
     bot.reply(message, resultString);
 });
 
-  //targets: [ 'U1FS19R9S', 'U1FSR1674' , 'U1FS6MVHN'],
+/**
+ * Hier fehlt noch das id parsen.
+ */
+controller.hears(['reply'], 'direct_message', function(bot, message){
+    text_message = message.text.replace('reply', '').trim();
+    var isnum = /^\d+$/.test(text_message);
 
-controller.hears(['text'], 'direct_message', function(bot, message) {
-    console.log("Saying something....");
-    startConversationWithMarat();
+    var replytext;
+    var order;
+    if(isnum){
+        order = db.getLastOrderForReply(message.user);
+        replytext = order.options[text_message];
+    }else{
+        replytext = text_message;
+        order = db.getLastOrderForReply(message.user);
+    }
+
+
+    for(var i = 0; i < order.targets.length; i++){
+        if(order.targets[i].name == message.user){
+            order.targets[i].replies.push(replytext);
+        }
+    }
+
+
+
+
+
 
 });
 
