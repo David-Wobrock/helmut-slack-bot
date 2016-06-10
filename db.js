@@ -52,11 +52,19 @@ db.getOrdersOfUser = function(userId){
 	console.log(userId);
 	console.log(db.orders);
 
-	for (var i = 0; i < db.orders.length; i++){
-		if(db.orders[i].owner == userId){
-			ordersofuser.push(db.orders[i]);
+	for(var id in db.orders){
+		cord = db.orders[id];
+		if(db.orders[id].owner == userId){
+			ordersofuser.push(db.orders[id]);
+			continue;
+		}
+		for(var i = 0; i < cord.targets; i++){
+			if(cord.targets[i] == userId){
+				ordersofuser.push(cord);
+			}
 		}
 	}
+
 	return ordersofuser;
 }
 

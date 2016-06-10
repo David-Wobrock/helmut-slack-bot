@@ -84,6 +84,22 @@ controller.hears(['close'], 'direct_message', function(bot, message) {
 });
 
 
+controller.hears(['show'], 'direct_message', function(bot, message){
+    console.log(typeof message.user);
+    console.log("show");
+    var orders = db.getOrdersOfUser(message.user);
+    if(orders == null || orders.length == 0){
+        bot.reply(message, "no Orders found");
+    }else{
+        reply = "";
+        for(var i = 0; i < orders.length; i++){
+            reply += db.orderToStringPretty(orders[i]);
+            reply += "----------\n";
+        }
+        bot.reply(message, reply);
+    }
+});
+
 controller.on('rtm_open', function() {
 })
 //U1FSR1674
@@ -94,6 +110,8 @@ function startConversationWithMarat(){
         conversation.next();
     });
 }
+
+
 
 function getUserString(userid){
     return "<@" + userid + ">";
