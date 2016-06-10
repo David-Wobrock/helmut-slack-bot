@@ -1,14 +1,19 @@
 {
   "name": "helmut",
   "version": "1.0.0",
-  "description": "",
+  "description": "Slack integration for food ordering management",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/David-Wobrock/helmut-slack-bot.git"
+  },
   "dependencies": {
-    "@slack/client": "^3.4.0"
+    "@slack/client": "^3.4.0",
+    "botkit": ""
   }
 }
