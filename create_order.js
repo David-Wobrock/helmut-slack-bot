@@ -113,6 +113,11 @@ function showOrderSummaryAndConfirm(orderId, conversation){
         if(responsetext === 'yes'){
             conversation.next();
             conversation.say("Sending...");
+            for (var i = 0; i < order.targets.length; ++i) {
+                conversation.task.bot.startPrivateConversation({'user': order.targets[i].name,}, function(err, conversation) {
+                    conversation.say("ORDER COMING from <@" + order.owner + ">");
+                });
+            }
             //Handle Sending and Collecting data
             conversation.say("Done!");
         }else{// remove the stuff;
