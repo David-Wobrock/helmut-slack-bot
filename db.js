@@ -46,4 +46,31 @@ db.orderIdExists = function(orderId, user) {
 	return true;
 }
 
+db.getOrdersOfUser = function(userId){
+	var ordersofuser = [];
+
+	console.log(userId);
+	console.log(db.orders);
+
+	for (var i = 0; i < db.orders.length; i++){
+		if(db.orders[i].owner == userId){
+			ordersofuser.push(db.orders[i]);
+		}
+	}
+	return ordersofuser;
+}
+
+db.orderToStringPretty = function(order){
+	var orderstr = '';
+	orderstr += 'Title: ' + order.title + '\n';
+	orderstr += 'Invited Users: \n';
+	for (var i = 0; i < order.targets.length; i++) {
+		orderstr += '\t<@' + order.targets[i] + '>\n';
+	}
+	orderstr += 'Possible Choices: \n';
+	for (var i = 0; i < order.options.length; i++) {
+		orderstr += '\t' + order.options[i] + '\n';
+	}
+	return orderstr;
+}
 module.exports = db;
