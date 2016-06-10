@@ -51,7 +51,7 @@ controller.hears(['collect'], 'direct_message', function(bot, message) {
     }
 
     var replies = collect.getReplies(id);
-    var resultString = formatter.formatCollectedReplies(replies);
+    var resultString = formatter.formatCollectedReplies(id, replies);
     bot.reply(message, resultString);
 });
 
