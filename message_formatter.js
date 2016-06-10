@@ -41,10 +41,14 @@ formatter.formatCollectedReplies = function(orderId, replies) {
 
 	// OUTPUT
 	for (var i = 0; i < options.length; ++i) {
-		resultStr += "- " + options[i].text + " (" + options[i].counter + " times)";
+		resultStr += "- " + options[i].text + " (" + options[i].counter + " times)\n";
 	}
 
 	return resultStr;
 }
+
+formatter.help_message = function() {
+	return "HELP MSG";
+};
 
 module.exports = formatter;

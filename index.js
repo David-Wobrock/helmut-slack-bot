@@ -108,6 +108,10 @@ controller.hears(['notify'], 'direct_message', function(bot, message) {
     // Delete order
 });
 
+controller.hears(['help'], 'direct_message', function(bot, message) {
+    bot.reply(message, formatter.help_message());
+});
+
 
 
 function getDefaultOrId(textMessage, user) {
