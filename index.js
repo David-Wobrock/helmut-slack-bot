@@ -15,8 +15,6 @@ var formatter = require(path.join(__dirname, 'message_formatter.js'));
 var db = require(path.join(__dirname, 'db.js'));
 
 
-
-
 if (!process.env.token) {
 }
 

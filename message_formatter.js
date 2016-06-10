@@ -3,6 +3,35 @@ var db = require(path.join(__dirname, 'db.js'));
 
 var formatter = {};
 
+formatter.orderToStringPretty = function(order){
+	var orderstr = '';
+	orderstr += '• ID: ' + order.id + '\n';
+	orderstr += '• Description: ' + order.title + '\n';
+	orderstr += '• Invited users: \n';
+	for (var i = 0; i < order.targets.length; i++) {
+		orderstr += '\t• <@' + order.targets[i].name + '>\n';
+	}
+	orderstr += '• Possible choices: \n';
+	for (var i = 0; i < order.options.length; i++) {
+		orderstr += '\t• ' + parseInt(parseInt(i)+1) + '. ' + order.options[i] + '\n';
+	}
+	return orderstr;
+}
+
+formatter.receivedOrder = function(order) {
+	var str = 'You received an order from <@' + order.owner + '>!\n';
+	str += "*" + order.title + "*\n";
+	str += "The order id is: " + order.id + '\n';
+
+	str += "The predefined options are:\n";
+	for (var i = 0; i < order.options.length; ++i) {
+		str += '\t• ' + order.options[i] + '\n';
+	}
+
+	return str;
+}
+
+
 formatter.formatCollectedReplies = function(orderId, replies) {
 	var resultStr = "Here are the current replies to order #" + orderId + "\n";
 	var options = [];
