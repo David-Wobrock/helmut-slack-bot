@@ -23,26 +23,35 @@ var bot = controller.spawn({
 
 controller.hears(['order'], 'direct_message', function(bot, message) {
 	console.log(message);
-	bot.reply(message,
-		'Hi! I am helmut'
-	);
-    /*bot.api.reactions.add({
-        timestamp: message.ts,
-        channel: message.channel,
-        name: 'robot_face',
-    }, function(err, res) {
-        if (err) {
-            bot.botkit.log('Failed to add emoji reaction :(', err);
-        }
-    });
 
-
-    controller.storage.users.get(message.user, function(err, user) {
-        if (user && user.name) {
-            bot.reply(message, 'Hello ' + user.name + '!!');
+    bot.startPrivateConversation(message, function(err, conversation) {
+        message = message.replace('order', '').trim();
+        console.log(message);
+        // No message/title
+        if (message === '') {
+            conversation.ask('What is the description of your order?', function(response, conversation) {
+                console.log("Title: " + response);
+                mentionPeople(conversation);
+            });
         } else {
-            bot.reply(message, 'Hello.');
+            mentionPeople(conversation);
         }
-    });*/
+    })
 });
 
+function mentionPeople(conversation) {
+    conversation.ask("Mention all the people you will be able to take part of your order with @... @...", function(response, conversation) {
+        console.log("You mentionend: " + response);
+    });
+}
+
+function setPredefinedOption(conversation) {
+    conversation.ask("Set a predefined option (or say finish)", function(response, conversation) {
+        if (response === 'finish') {
+
+        } else {
+            // Add predefined option to memory
+            setPredefinedOption(conversation);
+        }
+    });
+}
