@@ -55,6 +55,14 @@ controller.hears(['collect'], 'direct_message', function(bot, message) {
     bot.reply(message, resultString);
 });
 
+  //targets: [ 'U1FS19R9S', 'U1FSR1674' , 'U1FS6MVHN'],
+
+controller.hears(['text'], 'direct_message', function(bot, message) {
+    console.log("Saying something....");
+    startConversationWithMarat();
+
+});
+
 controller.hears(['close'], 'direct_message', function(bot, message) {
     textMessage = message.text.replace('close').trim();
     var id;
@@ -76,7 +84,16 @@ controller.hears(['close'], 'direct_message', function(bot, message) {
 });
 
 
-
+controller.on('rtm_open', function() {
+})
+//U1FSR1674
+function startConversationWithMarat(){
+    console.log("Sending stuff to marat...");
+    bot.startPrivateConversation({user: 'U1FSR1674'}, function(err, conversation){
+        conversation.say("Hi Marat!");
+        conversation.next();
+    });
+}
 
 function getUserString(userid){
     return "<@" + userid + ">";
