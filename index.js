@@ -128,6 +128,7 @@ function getDefaultOrId(textMessage, user) {
     return {'success': true, 'id': id};
 }
 
+
 function getUserString(userid){
     return "<@" + userid + ">";
 }

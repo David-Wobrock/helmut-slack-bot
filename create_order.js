@@ -1,6 +1,6 @@
 var path = require('path');
 var db = require(path.join(__dirname, 'db.js'));
-
+var reply = require(path.join(__dirname, 'reply.js'));
 var create_order = {};
 
 create_order.startCreateOrderConversation = function(message, conversation) {
@@ -96,32 +96,34 @@ function showOrderSummaryAndConfirm(orderId, conversation){
 
     var orderstr = db.orderToStringPretty(order);
     conversation.say("Creation completed!Here is Your Order:")
-    orderstr += 'Title: ' + order.title + '\n';
-    orderstr += 'Invited Users: \n';
-    for(var i = 0; i < order.targets.length; i++){
-        orderstr += '\t<@' + order.targets[i].name + '>\n';
-    }
-    orderstr += 'Possible Choices: \n';
-    for(var i = 0; i < order.options.length; i++){
-        orderstr += '\t'+order.options[i]+'\n';
-    }
-
 
     conversation.say(orderstr);
     conversation.ask("Is that ok? (type yes to accept, or something else to cancel!)", function(response, conversation){
         var responsetext = response.text;
         if(responsetext === 'yes'){
             conversation.next();
-            conversation.say("Sending...");
+            //Handle Sending and Collecting data
+            conversation.say("Sending...")
             for (var i = 0; i < order.targets.length; ++i) {
                 conversation.task.bot.startPrivateConversation({'user': order.targets[i].name,}, function(err, conversation) {
-                    conversation.say("ORDER COMING from <@" + order.owner + ">");
+                    conversation.say("ORDER INCOMING from <@" + order.owner + ">");
+                    orderstr = "";
+                    orderstr += "ID: " + order.id + "\n";
+                    orderstr += "Title: "+ order.title + "\n";
+                    for(var i = 0; i < order.options.length; i++){
+                        orderstr += i + ": " + order.options[i] + "\n";
+                    }
+
+                    conversation.say(orderstr);
+                    conversation.say("Reply with 'reply (number)' to select a choice or reply (text) to choose your own.");
+                    conversation.next();
                 });
             }
-            //Handle Sending and Collecting data
             conversation.say("Done!");
         }else{// remove the stuff;
             conversation.next();
+            conversation.say("Order Deleted...");
+            conversation.
             db.orders[orderId] = {};
             return;
         }

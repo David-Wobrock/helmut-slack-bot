@@ -14,7 +14,8 @@ db.createOrder = function(title) {
         'title': title,
         'targets': [],
         'options': [],
-		'status': 'OPEN' // or CLOSED
+		'status': 'OPEN', // or CLOSED
+		'replies': []
     };
     return id;
 };
