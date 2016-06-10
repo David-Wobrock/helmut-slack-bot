@@ -39,16 +39,13 @@ controller.hears(['order'], 'direct_message', function(bot, message) {
 
 controller.hears(['collect'], 'direct_message', function(bot, message) {
     textMessage = message.text.replace('collect').trim();
-    var id;
-    if (textMessage)
-        id = textMessage;
-    else
-        id = db.findLastOrderId(message.user);
 
-    if (!db.orderIdExists(id, message.user)) {
-        bot.reply(message, "You don't seem to have an order with id: " + id);
+    var res = getDefaultOrId(textMessage, message.user);
+    if (!res.success) {
+        bot.reply(message, res.message);
         return;
     }
+    var id = res.id;
 
     var replies = order_management.getReplies(id);
     var resultString = formatter.formatCollectedReplies(id, replies);
@@ -57,16 +54,13 @@ controller.hears(['collect'], 'direct_message', function(bot, message) {
 
 controller.hears(['close'], 'direct_message', function(bot, message) {
     textMessage = message.text.replace('close').trim();
-    var id;
-    if (textMessage)
-        id = textMessage;
-    else
-        id = db.findLastOrderId(message.user);
 
-    if (!db.orderIdExists(id, message.user)) {
-        bot.reply(message, "You don't seem to have an order with id: " + id);
+    var res = getDefaultOrId(textMessage, message.user);
+    if (!res.success) {
+        bot.reply(message, res.message);
         return;
     }
+    var id = res.id;
 
     var replies = order_management.getReplies(id);
     var resultString = formatter.formatCollectedReplies(id, replies);
@@ -79,23 +73,37 @@ controller.hears(['close'], 'direct_message', function(bot, message) {
 
 controller.hears(['notify'], 'direct_message', function(bot, message) {
     textMessage = message.text.replace('close').trim();
-    var id;
-    if (textMessage)
-        id = textMessage;
-    else
-        id = db.findLastOrderId(message.user);
 
-    if (!db.orderIdExists(id, message.user)) {
-        bot.reply(message, "You don't seem to have an order with id: " + id);
+    var res = getDefaultOrId(textMessage, message.user);
+    if (!res.success) {
+        bot.reply(message, res.message);
         return;
     }
-
+    var id = res.id;
     // Send to all targets that order has arrived
 
     // Delete order
 });
 
 
+
+function getDefaultOrId(textMessage, user) {
+    var id;
+
+    if (typeof textMessage != 'undefined' && textMessage != undefined && textMessage !== 'undefined') {
+        console.log("IN MESSAGE");
+        id = textMessage;
+    } else {
+        console.log("TRY TO FIND");
+        id = db.findLastOrderId(user);
+    }
+    
+    if (!db.orderIdExists(id, user)) {
+        return {'success': false, 'message': "You don't seem to have an order with id: " + id};
+    }
+
+    return {'success': true, 'id': id};
+}
 
 function getUserString(userid){
     return "<@" + userid + ">";

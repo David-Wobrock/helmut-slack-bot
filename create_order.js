@@ -99,7 +99,7 @@ function showOrderSummaryAndConfirm(orderId, conversation){
     orderstr += 'Title: ' + order.title + '\n';
     orderstr += 'Invited Users: \n';
     for(var i = 0; i < order.targets.length; i++){
-        orderstr += '\t<@' + order.targets[i] + '>\n';
+        orderstr += '\t<@' + order.targets[i].name + '>\n';
     }
     orderstr += 'Possible Choices: \n';
     for(var i = 0; i < order.options.length; i++){
