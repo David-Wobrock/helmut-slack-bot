@@ -61,7 +61,7 @@ function askForPredefinedOption(orderId, conversation) {
             // Send to everyone
             console.log(db.orders[orderId]);
             var mentionendPersons = db.orders[orderId].targets;
-            for (var i = 0; i < mentionendPersons; ++i) {
+            for (var i = 0; i < mentionendPersons.length; ++i) {
                 console.log("send to " + mentionendPersons[i]);
             }
             conversation.next();
