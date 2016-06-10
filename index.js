@@ -55,6 +55,26 @@ controller.hears(['collect'], 'direct_message', function(bot, message) {
     bot.reply(message, resultString);
 });
 
+controller.hears(['close'], 'direct_message', function(bot, message) {
+    textMessage = message.text.replace('close').trim();
+    var id;
+    if (textMessage)
+        id = textMessage;
+    else
+        id = db.findLastOrderId(message.user);
+
+    if (!db.orderIdExists(id, message.user)) {
+        bot.reply(message, "You don't seem to have an order with id: " + id);
+        return;
+    }
+
+    var replies = collect.getReplies(id);
+    var resultString = formatter.formatCollectedReplies(id, replies);
+    bot.reply(message, resultString);
+    
+    // Add to logic for sending to everyone that the order is closed + don't accept any replies 
+});
+
 
 
 
