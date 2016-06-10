@@ -10,6 +10,9 @@ rtm.start();*/
 var path = require('path');
 var reply = require(path.join(__dirname, 'reply.js'));
 var create_order = require(path.join(__dirname, 'create_order.js'));
+var collect = require(path.join(__dirname, 'collect.js'));
+var formatter = require(path.join(__dirname, 'message_formatter.js'));
+var db = require(path.join(__dirname, 'db.js'));
 
 
 
@@ -32,6 +35,24 @@ controller.hears(['order'], 'direct_message', function(bot, message) {
     bot.startPrivateConversation(message, function(err, conversation) {
         create_order.startCreateOrderConversation(message, conversation);
     })
+});
+
+controller.hears(['collect'], 'direct_message', function(bot, message) {
+    textMessage = message.text.replace('collect').trim();
+    var id;
+    if (textMessage)
+        id = textMessage;
+    else
+        id = db.findLastOrderId(message.user);
+
+    if (!db.orderIdExists(id, message.user)) {
+        bot.reply(message, "You don't seem to have an order with id: " + id);
+        return;
+    }
+
+    var replies = collect.getReplies(id);
+    var resultString = formatter.formatCollectedReplies(replies);
+    bot.reply(message, resultString);
 });
 
 
