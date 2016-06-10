@@ -111,6 +111,8 @@ function showOrderSummaryAndConfirm(orderId, conversation){
     conversation.ask("Is that ok? (type yes to accept, or something else to start over)", function(response, conversation){
         var responsetext = response.text;
         if(responsetext === 'yes'){
+            conversation.next();
+            conversation.say("Sending...");
             //Handle Sending and Collecting data
         }else{// remove the stuff;
             conversation.next();
