@@ -25,7 +25,7 @@ var controller = Botkit.slackbot({
 });
 
 var bot = controller.spawn({
-    token: process.env.token || 'xoxb-49949903845-oVTjY3K5OptAH9o4PDtTO18N'
+    token: process.env.token || 'xoxb-49945661952-GWvUBhJdCqDcxISw7Slf6aH5'
 }).startRTM();
 
 controller.hears(['order'], 'direct_message', function(bot, message) {
