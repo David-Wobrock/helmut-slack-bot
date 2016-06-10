@@ -108,7 +108,7 @@ function showOrderSummaryAndConfirm(orderId, conversation){
 
 
     conversation.say(orderstr);
-    conversation.ask("Is that ok? (type yes to accept, or something else to start over)", function(response, conversation){
+    conversation.ask("Is that ok? (type yes to accept, or something else to cancel!)", function(response, conversation){
         var responsetext = response.text;
         if(responsetext === 'yes'){
             conversation.next();
