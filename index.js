@@ -10,7 +10,7 @@ rtm.start();*/
 var path = require('path');
 var reply = require(path.join(__dirname, 'reply.js'));
 var create_order = require(path.join(__dirname, 'create_order.js'));
-var collect = require(path.join(__dirname, 'collect.js'));
+var order_management = require(path.join(__dirname, 'order_management.js'));
 var formatter = require(path.join(__dirname, 'message_formatter.js'));
 var db = require(path.join(__dirname, 'db.js'));
 
@@ -50,7 +50,7 @@ controller.hears(['collect'], 'direct_message', function(bot, message) {
         return;
     }
 
-    var replies = collect.getReplies(id);
+    var replies = order_management.getReplies(id);
     var resultString = formatter.formatCollectedReplies(id, replies);
     bot.reply(message, resultString);
 });
@@ -76,13 +76,13 @@ controller.hears(['close'], 'direct_message', function(bot, message) {
         return;
     }
 
-    var replies = collect.getReplies(id);
+    var replies = order_management.getReplies(id);
     var resultString = formatter.formatCollectedReplies(id, replies);
     bot.reply(message, resultString);
     
-    // Add to logic for sending to everyone that the order is closed + don't accept any replies 
+    order_management.closeOrder(id);
+    order_management.notifyOrderClosed(id, bot);
 });
-
 
 controller.hears(['show'], 'direct_message', function(bot, message){
     console.log(typeof message.user);
@@ -100,17 +100,23 @@ controller.hears(['show'], 'direct_message', function(bot, message){
     }
 });
 
-controller.on('rtm_open', function() {
-})
-//U1FSR1674
-function startConversationWithMarat(){
-    console.log("Sending stuff to marat...");
-    bot.startPrivateConversation({user: 'U1FSR1674'}, function(err, conversation){
-        conversation.say("Hi Marat!");
-        conversation.next();
-    });
-}
+controller.hears(['notify'], 'direct_message', function(bot, message) {
+    textMessage = message.text.replace('close').trim();
+    var id;
+    if (textMessage)
+        id = textMessage;
+    else
+        id = db.findLastOrderId(message.user);
 
+    if (!db.orderIdExists(id, message.user)) {
+        bot.reply(message, "You don't seem to have an order with id: " + id);
+        return;
+    }
+
+    // Send to all targets that order has arrived
+
+    // Delete order
+});
 
 
 function getUserString(userid){

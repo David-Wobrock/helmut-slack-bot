@@ -105,13 +105,13 @@ function showOrderSummaryAndConfirm(orderId, conversation){
             conversation.next();
             conversation.say("Sending...");
             //Handle Sending and Collecting data
+            conversation.say("Done!");
         }else{// remove the stuff;
             conversation.next();
             db.orders[orderId] = {};
             return;
         }
     });
-
 }
 
 module.exports = create_order;
