@@ -96,6 +96,15 @@ function showOrderSummaryAndConfirm(orderId, conversation){
 
     var orderstr = db.orderToStringPretty(order);
     conversation.say("Creation completed!Here is Your Order:")
+    orderstr += 'Title: ' + order.title + '\n';
+    orderstr += 'Invited Users: \n';
+    for(var i = 0; i < order.targets.length; i++){
+        orderstr += '\t<@' + order.targets[i].name + '>\n';
+    }
+    orderstr += 'Possible Choices: \n';
+    for(var i = 0; i < order.options.length; i++){
+        orderstr += '\t'+order.options[i]+'\n';
+    }
 
 
     conversation.say(orderstr);

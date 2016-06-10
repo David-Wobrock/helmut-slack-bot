@@ -20,13 +20,19 @@ db.createOrder = function(title) {
 };
 
 db.addToOrder = function(orderId, user) {
-	db.orders[orderId]['targets'].push(user);
+	db.orders[orderId]['targets'].push({
+		'name': user,
+		'replies': []
+	});
 }
 
 db.findLastOrderId = function(user) {
 	var lastId;
+	console.log(db.orders);
 	for (var currentId in db.orders) {
-		if (db.orders[currentId].owner == message.user) {
+		console.log("CURRENT:" + currentId);
+		if (db.orders[currentId].owner == user) {
+			console.log("FOUND");
 			lastId = currentId;
 		}
 	}
@@ -38,9 +44,10 @@ db.orderIdExists = function(orderId, user) {
 	if (!orderId)
 		return false;
 
-	if (!orderId in db.orders)
+	if (!(orderId in db.orders))
 		return false;
 
+		console.log(db.orders[orderId]);
 	if (db.orders[orderId].owner != user)
 		return false;
 		
