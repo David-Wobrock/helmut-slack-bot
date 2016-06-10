@@ -64,6 +64,7 @@ function askForPredefinedOption(orderId, conversation) {
             for (var i = 0; i < mentionendPersons.length; ++i) {
                 console.log("send to " + mentionendPersons[i]);
             }
+            convo.say('Ok! I sent out the invitations.');
             conversation.next();
             return;
         } else {
