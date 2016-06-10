@@ -47,4 +47,8 @@ formatter.formatCollectedReplies = function(orderId, replies) {
 	return resultStr;
 }
 
+formatter.help_message = function() {
+	return "HELP MSG";
+};
+
 module.exports = formatter;
