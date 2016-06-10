@@ -10,7 +10,7 @@ rtm.start();*/
 if (!process.env.token) {
 }
 
-var Botkit = require('Botkit');
+var Botkit = require('botkit');
 var os = require('os');
 
 var controller = Botkit.slackbot({
@@ -45,3 +45,4 @@ controller.hears(['order'], 'direct_message', function(bot, message) {
         }
     });*/
 });
+
