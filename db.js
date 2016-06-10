@@ -18,4 +18,8 @@ db.createOrder = function(title) {
     return id;
 };
 
+db.addToOrder = function(orderId, user) {
+	db.orders[orderId]['targets'].push(user);
+}
+
 module.exports = db;

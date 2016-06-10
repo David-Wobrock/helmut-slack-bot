@@ -26,20 +26,23 @@ function askForTitle(conversation) {
 function askToMentionPeople(orderId, conversation) {
     conversation.ask("Mention all the people you will be able to take part of your order with @... @...", function(response, conversation) {
         console.log("You mentionend: " + response);
-        if(response.text.trim().length==0) {
-            conversation.say('You seem to ignore my question....');
+		console.log(response);
+        if(response.text.trim().length === 0) {
+            conversation.say('You seem to ignore my question...');
             askToMentionPeople(orderId, conversation);
             return;
         }
         var mentionedPersons = response.text.split(' ');
         // TODO test that strings begin with @ (+ that this person exists?)
 
-
-        for (var i = 0; i < mentionedPersons.length; ++i)
-            if(!mentionedPersons[i].startsWith('<@')){
+        for (var i = 0; i < mentionedPersons.length; ++i) {
+            if (!mentionedPersons[i].startsWith('<@')) {
                 conversation.say('Sorry, we dont know who ' + mentionedPersons[i] + " is :(");
                 continue;
             }
+			console.log("ADDING TO ORDER: " + mentionedPersons[i]);
+			db.addToOrder(orderId, mentionedPersons[i]);
+		}
 
         askForPredefinedOption(orderId, conversation);
     });
