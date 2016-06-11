@@ -77,7 +77,7 @@ function showOrderSummaryAndConfirm(orderId, conversation) {
     conversation.say("(4/4) Creation completed! Nice work! Here is the summary of your order: ");
     conversation.say(formatter.orderToStringPretty(order));
 
-    conversation.ask("Is that ok? (type yes to accept, or something else to cancel!)", function(response, conversation){
+    conversation.ask("Is that ok? (type *yes* to accept, or something else to cancel)", function(response, conversation) {
         var responsetext = response.text;
         if(responsetext === 'yes' || responsetext === 'y' || responsetext === 'Y' || responsetext === 'YES') {
             conversation.next();
@@ -96,9 +96,8 @@ Write `reply <id> 1/my custom meal description to specify that the reply corresp
             conversation.say("Done!");
         } else {// remove the stuff;
             conversation.next();
-            conversation.say("Order deleted...");
-            conversation.
             db.orders[orderId] = {};
+            conversation.say("Order deleted. You can begin over now.");
             return;
         }
     });
