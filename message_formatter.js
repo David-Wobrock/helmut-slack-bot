@@ -21,11 +21,11 @@ formatter.orderToStringPretty = function(order){
 formatter.receivedOrder = function(order) {
 	var str = 'You received an order from <@' + order.owner + '>!\n';
 	str += "*" + order.title + "*\n";
-	str += "The order id is: " + order.id + '\n';
+	str += "Order #" + order.id + '\n';
 
 	str += "The predefined options are:\n";
 	for (var i = 0; i < order.options.length; ++i) {
-		str += '\t• ' + order.options[i] + '\n';
+		str += '\t' + parseInt(i+1) + ' ' + order.options[i] + '\n';
 	}
 
 	return str;
@@ -50,7 +50,8 @@ formatter.formatCollectedReplies = function(orderId, replies) {
 	for (var i = 0; i < replies.length; ++i) {
 		if (replies[i] === parseInt(replies[i], 10)) {
 			var replyNb = parseInt(replies[i]);
-			// Is int, so maybe an option
+            // Is int, so maybe an option
+            console.log(replyNb);
 			if (1 < replyNb && replyNb <= numberOfDefaultOptions) {
 				options[replyNb].counter++;
 			} else {
