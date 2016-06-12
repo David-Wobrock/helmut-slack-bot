@@ -5,8 +5,6 @@ var reply = {};
 
 reply.handleReplyToOrder = function(message, bot) {
     text_message = message.text.replace('reply', '').trim();
-    console.log("MESSAGE");
-    console.log(text_message);
     // Specified id
     if (text_message.startsWith('&lt;')) {
         var pos = text_message.indexOf('&gt;');
@@ -19,8 +17,7 @@ reply.handleReplyToOrder = function(message, bot) {
             return;
         }
     }
-    console.log("ID");
-    console.log(id);
+
     // Verify it exists, is open and this user is mentionend
     if (!(id in db.orders)) {
         bot.reply(message, 'The id ' + id + ' is not an existing order');
@@ -40,12 +37,11 @@ reply.handleReplyToOrder = function(message, bot) {
     }
 
     if (db.orders[id].status !== 'OPEN') {
-        bot.reply(message, 'The order #' + id + ' already closed.');
+        bot.reply(message, 'The order #' + id + ' already closed. Sorry!');
         return;
     }
 
     var order = db.orders[id];
-    console.log("WANTS: " + text_message);
     
     for (var i = 0; i < order.targets.length; i++) {
         if (order.targets[i].name == message.user) {

@@ -34,7 +34,6 @@ db.findLastOrderId = function(user) {
 			lastId = currentId;
 		}
 	}
-    console.log("OUTPUT: " + lastId);
 	return lastId;
 }
 
@@ -45,7 +44,6 @@ db.orderIdExists = function(orderId, user) {
 	if (!(orderId in db.orders))
 		return false;
 
-		console.log(db.orders[orderId]);
 	if (db.orders[orderId].owner != user)
 		return false;
 		
@@ -54,9 +52,6 @@ db.orderIdExists = function(orderId, user) {
 
 db.getOrdersOfUser = function(userId){
 	var ordersofuser = [];
-
-	console.log(userId);
-	console.log(db.orders);
 
 	for(var id in db.orders){
 		cord = db.orders[id];
@@ -77,12 +72,7 @@ db.getAllOrdersToReply = function(userId){
 	var ordersofuser = [];
 	for(var id in db.orders){
 		var cord = db.orders[id];
-		console.log("KAHSFJLKASHFJK");
-		console.log(cord.targets.length);
-		console.log(cord);
 		for(var i = 0; i < cord.targets.length; i++){
-			console.log("TARGET: ")
-			console.log(db.orders[id].targets[i]);
 			if(cord.targets[i].name == userId && cord.status == 'OPEN'){
 				ordersofuser.push(cord);
 			}
@@ -95,7 +85,6 @@ db.getAllOrdersToReply = function(userId){
 db.getLastOrderForReply = function(userId){
 	var orders = db.getAllOrdersToReply(userId);
 
-	console.log(orders);
 	var latestTime = 0;
 	var latestOrder;
 	for(var i = 0 ; i < orders.length; i++){

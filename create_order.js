@@ -80,9 +80,9 @@ function showOrderSummaryAndConfirm(orderId, conversation) {
             for (var i = 0; i < order.targets.length; ++i) {
                 conversation.task.bot.startPrivateConversation({'user': order.targets[i].name,}, function(err, conversation) {
                     conversation.say(formatter.receivedOrder(order));
-                    conversation.say("Answer with `reply 1` for example to choose a predefined option.\n\
+                    conversation.say("Write `reply 1` for example to choose a predefined option.\n\
 Write `reply my custom meal description` to select something else than the predefined options\n\
-Write `reply <id> 1/my custom meal description to specify that the reply corresponds the an order that is not the latest.`");
+Write `reply <id> my custom meal description to specify that the reply corresponds the an order that is not the latest.`");
                     conversation.next();
                 });
             }

@@ -60,20 +60,19 @@ controller.hears(['close'], 'direct_message', function(bot, message) {
     
     order_management.closeOrder(id);
     order_management.notifyOrderClosed(id, bot);
+    bot.reply(message, "We notified all invited users that this order is now closed! `notify` them once the food arrived");
 });
 
 controller.hears(['show'], 'direct_message', function(bot, message){
-    console.log(typeof message.user);
-    console.log("show");
     var orders = db.getOrdersOfUser(message.user);
-    if(orders == null || orders.length == 0){
+    if(orders == null || orders.length == 0) {
         bot.reply(message, "no Orders found");
-    }else{
-        reply = "----------\n";
+    } else {
+        var reply = "----------\n";
         for(var i = 0; i < orders.length; i++){
             reply += formatter.orderToStringPretty(orders[i]);
             reply += "Status: " + orders[i].status;
-            reply += "----------\n";
+            reply += "\n----------\n";
         }
         bot.reply(message, reply);
     }
@@ -88,9 +87,13 @@ controller.hears(['notify'], 'direct_message', function(bot, message) {
         return;
     }
     var id = res.id;
+
     // Send to all targets that order has arrived
+    order_management.notifyOrderArrived(id, bot);
+    bot.reply(message, "We notified all invited users that your returned! Order #" + id + " will be deleted now.");
 
     // Delete order
+    delete db.orders[id];
 });
 
 controller.hears(['help'], 'direct_message', function(bot, message) {
@@ -103,21 +106,17 @@ function getDefaultOrId(textMessage, user) {
     var id;
     
     if (typeof textMessage != 'undefined' && textMessage != undefined && textMessage !== 'undefined' && textMessage !== '') {
-        console.log("IN MESSAGE: " + textMessage);
         id = textMessage;
     } else {
-        console.log("TRY TO FIND");
         id = db.findLastOrderId(user);
         if (!id)
             return { 'success': false, 'message': "You don't seem to have a recent open order" };
     }
     
-    console.log("TESTING if okay: " + id);
     if (!db.orderIdExists(id, user)) {
-        console.log("FAIL");
         return {'success': false, 'message': "You don't seem to have an order with id: " + id};
     }
-    console.log("OKAY!");
+
     return {'success': true, 'id': id};
 }
 

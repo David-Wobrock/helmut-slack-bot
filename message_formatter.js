@@ -50,7 +50,6 @@ formatter.formatCollectedReplies = function(orderId, replies) {
 	}
 
     // COUNT REPLIES
-    console.log("REPLIES");
     for (var i = 0; i < replies.length; ++i) {
         if (replies[i] == parseInt(replies[i])) {
 			var replyNb = parseInt(replies[i]);

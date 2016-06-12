@@ -23,11 +23,24 @@ order_management.closeOrder = function(id) {
 order_management.notifyOrderClosed = function(id, bot) {
 	var order = db.orders[id];
 	for (var i = 0; i < order.targets.length; ++i) {
-		bot.startPrivateConversation({
-			'user': order.targets[i],
-			'text': "The order #" + order.id + " is now closed. <@" + order.owner + "> will get your food soon :)" ,
+        bot.startPrivateConversation({ 'user': order.targets[i].name }, function (err, conversation) {
+            conversation.say("The order #" + order.id + " (" + order.title + ") is now closed. <@" + order.owner + "> will get your food soon! :)");
+            conversation.next();
 		});
 	}
 }
+
+order_management.notifyOrderArrived = function (id, bot) {
+    var order = db.orders[id];
+    for (var i = 0; i < order.targets.length; ++i) {
+        bot.startPrivateConversation({ 'user': order.targets[i].name }, function (err, conversation) {
+            conversation.say("The order #" + order.id + " (" + order.title + ") has arrived!\n\
+You can ask <@" + order.owner + "> where he is and where your food is! :D Bon appetit!");
+            conversation.next();
+        });
+    }
+}
+
+
 
 module.exports = order_management;
