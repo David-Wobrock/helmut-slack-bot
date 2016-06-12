@@ -33,6 +33,9 @@ formatter.receivedOrder = function(order) {
 
 
 formatter.formatCollectedReplies = function(orderId, replies) {
+    if (replies.length === 0) {
+        return "No replies to your order yet...";
+
 	var resultStr = "Here are the current replies to order #" + orderId + "\n";
 	var options = [];
 	var defaultOptions = db.orders[orderId].options;
