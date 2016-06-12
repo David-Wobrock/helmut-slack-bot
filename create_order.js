@@ -7,14 +7,7 @@ var create_order = {};
 
 create_order.startCreateOrderConversation = function(message, conversation) {
 	message = message.text.replace('order', '').trim();
-	console.log(message);
-	// No message/title
-	if (message === '') {
-		askForTitle(conversation);
-	} else {
-		var orderId = db.createOrder(message);
-		askToMentionPeople(orderId, conversation);
-	}
+	askForTitle(conversation);
 };
 
 function askForTitle(conversation) {
@@ -96,7 +89,7 @@ Write `reply <id> 1/my custom meal description to specify that the reply corresp
             conversation.say("Done!");
         } else {// remove the stuff;
             conversation.next();
-            db.orders[orderId] = {};
+            delete db.orders[orderId]; 
             conversation.say("Order deleted. You can begin over now.");
             return;
         }

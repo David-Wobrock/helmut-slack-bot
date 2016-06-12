@@ -29,15 +29,12 @@ db.addToOrder = function(orderId, user) {
 
 db.findLastOrderId = function(user) {
 	var lastId;
-	console.log(db.orders);
 	for (var currentId in db.orders) {
-		console.log("CURRENT:" + currentId);
 		if (db.orders[currentId].owner == user) {
-			console.log("FOUND");
 			lastId = currentId;
 		}
 	}
-
+    console.log("OUTPUT: " + lastId);
 	return lastId;
 }
 

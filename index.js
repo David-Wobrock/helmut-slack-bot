@@ -26,7 +26,7 @@ controller.hears(['order'], 'direct_message', function(bot, message) {
 });
 
 controller.hears(['collect'], 'direct_message', function(bot, message) {
-    textMessage = message.text.replace('collect').trim();
+    textMessage = message.text.replace('collect', '').trim();
 
     var res = getDefaultOrId(textMessage, message.user);
     if (!res.success) {
@@ -45,7 +45,7 @@ controller.hears(['reply'], 'direct_message', function (bot, message) {
 });
 
 controller.hears(['close'], 'direct_message', function(bot, message) {
-    textMessage = message.text.replace('close').trim();
+    textMessage = message.text.replace('close', '').trim();
 
     var res = getDefaultOrId(textMessage, message.user);
     if (!res.success) {
@@ -69,9 +69,10 @@ controller.hears(['show'], 'direct_message', function(bot, message){
     if(orders == null || orders.length == 0){
         bot.reply(message, "no Orders found");
     }else{
-        reply = "";
+        reply = "----------\n";
         for(var i = 0; i < orders.length; i++){
-            reply += db.orderToStringPretty(orders[i]);
+            reply += formatter.orderToStringPretty(orders[i]);
+            reply += "Status: " + orders[i].status;
             reply += "----------\n";
         }
         bot.reply(message, reply);
@@ -79,7 +80,7 @@ controller.hears(['show'], 'direct_message', function(bot, message){
 });
 
 controller.hears(['notify'], 'direct_message', function(bot, message) {
-    textMessage = message.text.replace('notify').trim();
+    textMessage = message.text.replace('notify', '').trim();
 
     var res = getDefaultOrId(textMessage, message.user);
     if (!res.success) {
@@ -101,18 +102,22 @@ controller.hears(['help'], 'direct_message', function(bot, message) {
 function getDefaultOrId(textMessage, user) {
     var id;
     
-    if (typeof textMessage != 'undefined' && textMessage != undefined && textMessage !== 'undefined') {
-        console.log("IN MESSAGE");
+    if (typeof textMessage != 'undefined' && textMessage != undefined && textMessage !== 'undefined' && textMessage !== '') {
+        console.log("IN MESSAGE: " + textMessage);
         id = textMessage;
     } else {
         console.log("TRY TO FIND");
         id = db.findLastOrderId(user);
+        if (!id)
+            return { 'success': false, 'message': "You don't seem to have a recent open order" };
     }
     
+    console.log("TESTING if okay: " + id);
     if (!db.orderIdExists(id, user)) {
+        console.log("FAIL");
         return {'success': false, 'message': "You don't seem to have an order with id: " + id};
     }
-
+    console.log("OKAY!");
     return {'success': true, 'id': id};
 }
 

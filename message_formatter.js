@@ -33,7 +33,7 @@ formatter.receivedOrder = function(order) {
 
 
 formatter.formatCollectedReplies = function(orderId, replies) {
-    if (replies.length === 0) {
+    if (replies.length === 0)
         return "No replies to your order yet...";
 
 	var resultStr = "Here are the current replies to order #" + orderId + "\n";
@@ -49,17 +49,17 @@ formatter.formatCollectedReplies = function(orderId, replies) {
 		});
 	}
 
-	// COUNT REPLIES
-	for (var i = 0; i < replies.length; ++i) {
-		if (replies[i] === parseInt(replies[i], 10)) {
+    // COUNT REPLIES
+    console.log("REPLIES");
+    for (var i = 0; i < replies.length; ++i) {
+        if (replies[i] == parseInt(replies[i])) {
 			var replyNb = parseInt(replies[i]);
             // Is int, so maybe an option
-            console.log(replyNb);
-			if (1 < replyNb && replyNb <= numberOfDefaultOptions) {
-				options[replyNb].counter++;
+			if (1 <= replyNb && replyNb <= numberOfDefaultOptions) {
+				options[replyNb-1].counter++;
 			} else {
 				options.push({
-					'text': replyNb + '(helmut: yes, he replied with a number...)',
+					'text': replyNb + ' (yes, he replied with a number...)',
 					'counter': 1
 				});
 			}

@@ -50,6 +50,8 @@ reply.handleReplyToOrder = function(message, bot) {
     for (var i = 0; i < order.targets.length; i++) {
         if (order.targets[i].name == message.user) {
             order.targets[i].replies.push(text_message);
+            bot.reply(message, 'Your reply has been registered!');
+            return;
         }
     }
 };
