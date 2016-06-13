@@ -25,4 +25,4 @@ You will have a private conversation with _helmut_. The commands you can tell hi
 * [mrWinston](https://github.com/mrWinston)
 * [David-Wobrock](https://github.com/David-Wobrock)
 
-For [3YOURMIND GmbH](www.3yourmind.com)
+For [3YOURMIND GmbH](https://www.3yourmind.com)
