@@ -1,4 +1,4 @@
-# Helmut, the waiter slack Bot
+# Helmut, the waiter slack bot
 
 ## Installation
 
@@ -25,4 +25,11 @@ You will have a private conversation with _helmut_. The commands you can tell hi
 * [mrWinston](https://github.com/mrWinston)
 * [David-Wobrock](https://github.com/David-Wobrock)
 
-For [3YOURMIND GmbH](https://www.3yourmind.com)
+Made during a [3YOURMIND GmbH](https://www.3yourmind.com) Hackathon
+
+## TODO
+
+* Migrate to TypeScript :D
+* Better flows for making the integration easier to use
+* Easier to use (less possible to make errors, use reactions)
+* Create a Slack integration
