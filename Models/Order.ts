@@ -1,4 +1,6 @@
-﻿class Order {
+﻿import { User } from "./User";
+
+class Order {
 
     constructor(private _id: number, private _title: string, private _owner: User, private _participants: Array<User>) {
     }
@@ -11,3 +13,5 @@
         return this._title;
     }
 }
+
+export { Order };

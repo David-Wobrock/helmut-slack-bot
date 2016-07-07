@@ -1,4 +1,6 @@
-﻿class CreateOrderConversation extends AbstractConversation {
+﻿import { AbstractConversation } from "./AbstractConversation";
+
+class CreateOrderConversation extends AbstractConversation {
 
     private static get NUMBER_OF_STEPS(): number {
         return 3;
@@ -16,44 +18,52 @@
     private mentionedIds: string[];
 
     public start(): void {
-        this._bot.startPrivateConversation(this._message, function (err, conversation) {
-            this.askForTitle(1, conversation);
-        });
+        this._bot.startPrivateConversation(this._message, this.startConversation);
     }
 
-    private askForTitle(stepNb, conversation): void {
-        let msg: string = this.formatMessage(stepNb, CreateOrderConversation.NUMBER_OF_STEPS, CreateOrderConversation.ASK_FOR_TITLE_STR);
-
-        conversation.ask(msg, function (response, conversation) {
-            this.orderTitle = response.text;
-
-            stepNb = this.step(stepNb);
-            this.askToMentionPeople(stepNb, conversation);
-        });
+    private startConversation(err, conversation) {
+        console.log(this);
+        this.askForTitle(conversation);
     }
 
-    private askToMentionPeople(stepNb, conversation): void {
-        let msg = this.formatMessage(stepNb, CreateOrderConversation.NUMBER_OF_STEPS, CreateOrderConversation.ASK_TO_MENTION_PEOPLE);
+    private askForTitle(conversation): void {
+        let msg: string = this.formatMessage(CreateOrderConversation.NUMBER_OF_STEPS, CreateOrderConversation.ASK_FOR_TITLE_STR);
 
-        conversation.ask(msg, function (response, conversation) {
-                var mentionedPersons = response.text.split(' ');
-
-                for (let i = 0; i < mentionedPersons.length; ++i) {
-                    if (!mentionedPersons[i].startsWith('<@')) {
-                        conversation.say('Sorry, we dont know who ' + mentionedPersons[i] + " is :(");
-                        continue;
-                    }
-                    this.mentionedIds.push(mentionedPersons[i].substr(2, 9)); // TODO really necessary?
-                }
-
-                stepNb = this.step(stepNb);
-                // TODO add predefined options
-                this.askForCon(stepNb, conversation);
-            });
+        conversation.ask(msg, this.askForTitle_HandleResponse);
     }
 
-    private askForConfirmation(stepNb, conversation): void {
-        var order = db.orders[orderId];
+    private askForTitle_HandleResponse(response, conversation): void {
+        this.orderTitle = response.text;
+
+        this.step(conversation);
+        this.askToMentionPeople(conversation);
+    }
+
+    private askToMentionPeople(conversation): void {
+        let msg = this.formatMessage(CreateOrderConversation.NUMBER_OF_STEPS, CreateOrderConversation.ASK_TO_MENTION_PEOPLE);
+
+        conversation.ask(msg, this.askToMentionPeople_HandleResponse);
+    }
+
+    private askToMentionPeople_HandleResponse(response, conversation) {
+        var mentionedPersons = response.text.split(' ');
+
+        for (let i = 0; i < mentionedPersons.length; ++i) {
+            if (!mentionedPersons[i].startsWith('<@')) {
+                conversation.say('Sorry, we dont know who ' + mentionedPersons[i] + " is :(");
+                continue;
+            }
+            this.mentionedIds.push(mentionedPersons[i].substr(2, 9)); // TODO really necessary?
+        }
+
+        this.step(conversation);
+        // TODO: Add predefined options
+        this.askForConfirmation(conversation);
+    }
+
+    private askForConfirmation(conversation): void {
+        console.log("HOLA QUETAL");
+        /*var order = db.orders[orderId];
 
         let msg = this.formatMessage(
 
@@ -83,6 +93,8 @@ Write `reply <id> my custom meal description to specify that the reply correspon
                 conversation.say("Order deleted. You can begin over now.");
                 return;
             }
-        });
+        });*/
     }
 }
+
+export { CreateOrderConversation };

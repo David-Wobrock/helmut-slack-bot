@@ -1,4 +1,8 @@
-﻿class OrderFabric {
+﻿import { Order } from "../Order";
+import { User } from "../User";
+import { Database } from "../../Database/Database";
+
+class OrderFabric {
 
     static _currentOrderId = 1;
 
@@ -19,3 +23,5 @@
         return newOrder;
     }
 }
+
+export { OrderFabric };

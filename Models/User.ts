@@ -9,3 +9,5 @@
         return this._slackMention;
     }
 }
+
+export { User };

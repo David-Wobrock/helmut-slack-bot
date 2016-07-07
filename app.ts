@@ -1,5 +1,10 @@
-﻿import botkit = require('botkit');
-import os = require('os');
+﻿declare var require: any
+declare var process: any
+
+var botkit = require('botkit');
+var os = require('os');
+import { CreateOrderConversation } from "./Conversations/CreateOrderConversation";
+
 
 var controller = botkit.slackbot({
     debug: false,

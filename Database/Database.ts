@@ -1,4 +1,6 @@
-﻿class Database {
+﻿import { Order } from "../Models/Order";
+
+class Database {
 
     private static instance: Database = new Database();
 
@@ -20,3 +22,5 @@
         this.database.orders[order.id] = order;
     }
 }
+
+export { Database };
