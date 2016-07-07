@@ -6,3 +6,6 @@ obj/
 *.njsproj
 *.sln
 *.dat
+
+*.js
+*.js.map
