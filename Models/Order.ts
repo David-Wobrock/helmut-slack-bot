@@ -6,16 +6,12 @@ class Order {
     constructor(private _id: number, private _title: string, private _owner: User, private _participants: Array<User>) {
     }
 
-    public get id(): number {
+    public get Id(): number {
         return this._id;
     }
 
-    public get title(): string {
-        return this._title;
-    }
-
     public Delete(): void {
-        Database.getInstance().DeleteOrder(this._id);
+        Database.GetInstance().DeleteOrder(this._id);
     }
 
     public SendInvitations(): void {
@@ -28,7 +24,7 @@ class Order {
         • Invited users: ';
 
         for (let i = 0; i < this._participants.length; ++i)
-            orderStr += '\t• ' + this._participants[i].slackMention + '\n';
+            orderStr += '\t• ' + this._participants[i].SlackMention + '\n';
 
         return orderStr;
     }

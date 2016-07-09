@@ -2,7 +2,7 @@
     constructor(private _slackMention: string) {
     }
 
-    public get slackMention(): string {
+    public get SlackMention(): string {
         return this._slackMention;
     }
 }

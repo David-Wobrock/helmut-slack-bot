@@ -16,5 +16,5 @@ var bot = controller.spawn({
 
 controller.hears(['order'], 'direct_message', function (bot, message) {
     let conversation = new CreateOrderConversation(bot, message);
-    conversation.start();
+    conversation.Start();
 });

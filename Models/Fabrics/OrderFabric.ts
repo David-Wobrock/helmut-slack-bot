@@ -6,7 +6,7 @@ class OrderFabric {
 
     static _currentOrderId = 1;
 
-    static createOrder(title: string, owner: User, participantIds: string[]): Order {
+    static CreateOrder(title: string, owner: User, participantIds: string[]): Order {
         let orderId = OrderFabric._currentOrderId++;
 
         let nbParticipants = participantIds.length;
@@ -17,7 +17,7 @@ class OrderFabric {
         }
 
         let newOrder = new Order(orderId, title, owner, participants);
-        Database.getInstance().addOrder(newOrder);
+        Database.GetInstance().AddOrder(newOrder);
         return newOrder;
     }
 }

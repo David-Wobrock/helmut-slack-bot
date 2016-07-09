@@ -34,34 +34,34 @@ class CreateOrderConversation extends AbstractConversation {
         this._mentionedIds = [];
     }
 
-    public start(): void {
-        this._bot.startPrivateConversation(this._message, this.startConversation.bind(this));
+    public Start(): void {
+        this._bot.startPrivateConversation(this._message, this.StartConversation.bind(this));
     }
 
-    private startConversation(err, conversation): void {
-        this.askForTitle(conversation);
+    private StartConversation(err, conversation): void {
+        this.AskForTitle(conversation);
     }
 
-    private askForTitle(conversation): void {
-        let msg: string = this.formatMessage(CreateOrderConversation.NUMBER_OF_STEPS, CreateOrderConversation.ASK_FOR_TITLE_STR);
+    private AskForTitle(conversation): void {
+        let msg: string = this.FormatMessage(CreateOrderConversation.NUMBER_OF_STEPS, CreateOrderConversation.ASK_FOR_TITLE_STR);
 
-        conversation.ask(msg, this.askForTitle_HandleResponse.bind(this));
+        conversation.ask(msg, this.AskForTitle_HandleResponse.bind(this));
     }
 
-    private askForTitle_HandleResponse(response, conversation): void {
+    private AskForTitle_HandleResponse(response, conversation): void {
         this._orderTitle = response.text;
 
-        this.step(conversation);
-        this.askToMentionPeople(conversation);
+        this.Step(conversation);
+        this.AskToMentionPeople(conversation);
     }
 
-    private askToMentionPeople(conversation): void {
-        let msg: string = this.formatMessage(CreateOrderConversation.NUMBER_OF_STEPS, CreateOrderConversation.ASK_TO_MENTION_PEOPLE);
+    private AskToMentionPeople(conversation): void {
+        let msg: string = this.FormatMessage(CreateOrderConversation.NUMBER_OF_STEPS, CreateOrderConversation.ASK_TO_MENTION_PEOPLE);
 
-        conversation.ask(msg, this.askToMentionPeople_HandleResponse.bind(this));
+        conversation.ask(msg, this.AskToMentionPeople_HandleResponse.bind(this));
     }
 
-    private askToMentionPeople_HandleResponse(response, conversation): void {
+    private AskToMentionPeople_HandleResponse(response, conversation): void {
         var mentionedPersons = response.text.split(' ');
 
         for (let i = 0; i < mentionedPersons.length; ++i) {
@@ -72,22 +72,22 @@ class CreateOrderConversation extends AbstractConversation {
             this._mentionedIds.push(mentionedPersons[i]);
         }
 
-        this.step(conversation);
+        this.Step(conversation);
         // TODO: Add predefined options
-        this.askForConfirmation(conversation);
+        this.AskForConfirmation(conversation);
     }
 
-    private askForConfirmation(conversation): void {
-        this._order = OrderFabric.createOrder(this._orderTitle, this._initiator, this._mentionedIds);
+    private AskForConfirmation(conversation): void {
+        this._order = OrderFabric.CreateOrder(this._orderTitle, this._initiator, this._mentionedIds);
 
         let messageString: string = CreateOrderConversation.ASK_FOR_CONFIRMATION_BEGINNING_STR + '\n' + this._order.ToString() + '\n\n' + CreateOrderConversation.ASK_FOR_CONFIRMATION_ENDING_STR;
 
-        let completeMessage: string = this.formatMessage(CreateOrderConversation.NUMBER_OF_STEPS, messageString);
+        let completeMessage: string = this.FormatMessage(CreateOrderConversation.NUMBER_OF_STEPS, messageString);
 
-        conversation.ask(completeMessage, this.askForConfirmation_HandleResponse.bind(this));
+        conversation.ask(completeMessage, this.AskForConfirmation_HandleResponse.bind(this));
     }
 
-    private askForConfirmation_HandleResponse(response, conversation) {
+    private AskForConfirmation_HandleResponse(response, conversation) {
         let endingConversationMessage: string;
 
         let responseText = response.text;
@@ -99,7 +99,7 @@ class CreateOrderConversation extends AbstractConversation {
             endingConversationMessage = 'Order has been canceled. You can begin over now.';
         }
 
-        this.step(conversation);
+        this.Step(conversation);
         conversation.say(endingConversationMessage);
         /*var order = db.orders[orderId];
 

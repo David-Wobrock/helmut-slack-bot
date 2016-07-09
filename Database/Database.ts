@@ -2,29 +2,29 @@
 
 class Database {
 
-    private static instance: Database = new Database();
+    private static _instance: Database = new Database();
 
     constructor() {
-        if (Database.instance)
+        if (Database._instance)
             throw new Error("Error: Database instance exists already");
-        Database.instance = this;
+        Database._instance = this;
     }
 
-    public static getInstance(): Database {
-        return Database.instance;
+    public static GetInstance(): Database {
+        return Database._instance;
     }
 
-    private database = {
+    private _database = {
         'orders': {}
     };
 
-    public addOrder(order: Order): void {
-        this.database.orders[order.id] = order;
+    public AddOrder(order: Order): void {
+        this._database.orders[order.Id] = order;
     }
 
     public DeleteOrder(orderId: number): void {
         // TODO handle error
-        delete this.database.orders[orderId];
+        delete this._database.orders[orderId];
     }
 }
 

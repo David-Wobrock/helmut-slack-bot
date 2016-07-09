@@ -10,18 +10,18 @@ abstract class AbstractConversation {
         this._stepNb = 1;
     }
 
-    public abstract start(): void;
+    public abstract Start(): void;
 
-    protected step(conversation): void {
+    protected Step(conversation): void {
         conversation.next();
         ++(this._stepNb);
     }
 
-    protected formatMessage(totalNumberOfSteps: number, message: string): string {
-        return this.stepNbToString(this._stepNb, totalNumberOfSteps) + " " + message;
+    protected FormatMessage(totalNumberOfSteps: number, message: string): string {
+        return this.StepNbToString(this._stepNb, totalNumberOfSteps) + " " + message;
     }
 
-    private stepNbToString(currentStep: number, totalNumberOfSteps: number): string {
+    private StepNbToString(currentStep: number, totalNumberOfSteps: number): string {
         return `(${currentStep}/${totalNumberOfSteps})`;
     }
 }
