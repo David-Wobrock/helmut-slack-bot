@@ -21,6 +21,11 @@ class Database {
     public addOrder(order: Order): void {
         this.database.orders[order.id] = order;
     }
+
+    public DeleteOrder(orderId: number): void {
+        // TODO handle error
+        delete this.database.orders[orderId];
+    }
 }
 
 export { Database };

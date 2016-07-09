@@ -1,4 +1,6 @@
 ﻿import { AbstractConversation } from "./AbstractConversation";
+import { OrderFabric } from "../Models/Fabrics/OrderFabric";
+import { Order } from "../Models/Order";
 
 class CreateOrderConversation extends AbstractConversation {
 
@@ -14,6 +16,15 @@ class CreateOrderConversation extends AbstractConversation {
         Just use the basic slack mentioning @marat @david_wobrock...';
     }
 
+    private static get ASK_FOR_CONFIRMATION_BEGINNING_STR(): string {
+        return 'Creation completed! Nice work! Here is the summary of your order:';
+    }
+
+    private static get ASK_FOR_CONFIRMATION_ENDING_STR(): string {
+        return 'Is that ok? (type * yes * to accept, or something else to cancel)';
+    }
+
+    private _order: Order;
     private _orderTitle: string;
     private _mentionedIds: string[];
 
@@ -67,7 +78,29 @@ class CreateOrderConversation extends AbstractConversation {
     }
 
     private askForConfirmation(conversation): void {
-        console.log("HOLA QUETAL");
+        this._order = OrderFabric.createOrder(this._orderTitle, this._initiator, this._mentionedIds);
+
+        let messageString: string = CreateOrderConversation.ASK_FOR_CONFIRMATION_BEGINNING_STR + '\n' + this._order.ToString() + '\n\n' + CreateOrderConversation.ASK_FOR_CONFIRMATION_ENDING_STR;
+
+        let completeMessage: string = this.formatMessage(CreateOrderConversation.NUMBER_OF_STEPS, messageString);
+
+        conversation.ask(completeMessage, this.askForConfirmation_HandleResponse.bind(this));
+    }
+
+    private askForConfirmation_HandleResponse(response, conversation) {
+        let endingConversationMessage: string;
+
+        let responseText = response.text;
+        if (responseText === 'yes' || responseText === 'y' || responseText === 'Y' || responseText === 'YES') {
+            this._order.SendInvitations();
+            endingConversationMessage = 'The order has been sent out to the participants.';
+        } else {
+            this._order.Delete();
+            endingConversationMessage = 'Order has been canceled. You can begin over now.';
+        }
+
+        this.step(conversation);
+        conversation.say(endingConversationMessage);
         /*var order = db.orders[orderId];
 
         let msg = this.formatMessage(
