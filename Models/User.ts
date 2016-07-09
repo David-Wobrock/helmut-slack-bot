@@ -1,8 +1,5 @@
 ﻿class User {
-    private _slackMention: string;
-
-    constructor(private _id: string) {
-        this._slackMention = '<@' + _id + '>';
+    constructor(private _slackMention: string) {
     }
 
     public get slackMention(): string {

@@ -14,38 +14,43 @@ class CreateOrderConversation extends AbstractConversation {
         Just use the basic slack mentioning @marat @david_wobrock...';
     }
 
-    private orderTitle: string;
-    private mentionedIds: string[];
+    private _orderTitle: string;
+    private _mentionedIds: string[];
 
-    public start(): void {
-        this._bot.startPrivateConversation(this._message, this.startConversation);
+    constructor(_bot, _message) {
+        super(_bot, _message);
+        this._orderTitle = '';
+        this._mentionedIds = [];
     }
 
-    private startConversation(err, conversation) {
-        console.log(this);
+    public start(): void {
+        this._bot.startPrivateConversation(this._message, this.startConversation.bind(this));
+    }
+
+    private startConversation(err, conversation): void {
         this.askForTitle(conversation);
     }
 
     private askForTitle(conversation): void {
         let msg: string = this.formatMessage(CreateOrderConversation.NUMBER_OF_STEPS, CreateOrderConversation.ASK_FOR_TITLE_STR);
 
-        conversation.ask(msg, this.askForTitle_HandleResponse);
+        conversation.ask(msg, this.askForTitle_HandleResponse.bind(this));
     }
 
     private askForTitle_HandleResponse(response, conversation): void {
-        this.orderTitle = response.text;
+        this._orderTitle = response.text;
 
         this.step(conversation);
         this.askToMentionPeople(conversation);
     }
 
     private askToMentionPeople(conversation): void {
-        let msg = this.formatMessage(CreateOrderConversation.NUMBER_OF_STEPS, CreateOrderConversation.ASK_TO_MENTION_PEOPLE);
+        let msg: string = this.formatMessage(CreateOrderConversation.NUMBER_OF_STEPS, CreateOrderConversation.ASK_TO_MENTION_PEOPLE);
 
-        conversation.ask(msg, this.askToMentionPeople_HandleResponse);
+        conversation.ask(msg, this.askToMentionPeople_HandleResponse.bind(this));
     }
 
-    private askToMentionPeople_HandleResponse(response, conversation) {
+    private askToMentionPeople_HandleResponse(response, conversation): void {
         var mentionedPersons = response.text.split(' ');
 
         for (let i = 0; i < mentionedPersons.length; ++i) {
@@ -53,7 +58,7 @@ class CreateOrderConversation extends AbstractConversation {
                 conversation.say('Sorry, we dont know who ' + mentionedPersons[i] + " is :(");
                 continue;
             }
-            this.mentionedIds.push(mentionedPersons[i].substr(2, 9)); // TODO really necessary?
+            this._mentionedIds.push(mentionedPersons[i]);
         }
 
         this.step(conversation);

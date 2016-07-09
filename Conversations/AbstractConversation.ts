@@ -7,7 +7,7 @@ abstract class AbstractConversation {
 
     constructor(protected _bot, protected _message) {
         this._initiator = new User(_message.user); // TODO works?
-        this._stepNb = 0;
+        this._stepNb = 1;
     }
 
     public abstract start(): void;
