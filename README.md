@@ -33,3 +33,4 @@ Made during a [3YOURMIND GmbH](https://www.3yourmind.com) Hackathon
 * Better flows for making the integration easier to use
 * Easier to use (less possible to make errors, use reactions)
 * Create a Slack integration
+* Write tests
