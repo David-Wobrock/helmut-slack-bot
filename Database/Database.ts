@@ -1,4 +1,5 @@
 ﻿import { Order } from "../Models/Order";
+import { User } from "../Models/User";
 
 class Database {
 
@@ -25,6 +26,19 @@ class Database {
     public DeleteOrder(orderId: number): void {
         // TODO handle error
         delete this._database.orders[orderId];
+    }
+
+    public OrdersWithParticipant(participant: User): Array<Order> {
+        let orders: Array<Order> = [];
+
+        for (let orderId in this._database.orders) {
+            let currentOrder: Order = this._database.orders[orderId];
+            for (let i = 0; i < currentOrder.Participants.length; ++i)
+                if (currentOrder.Participants[i].Id === participant.Id)
+                    orders.push(currentOrder);
+        }
+
+        return orders;
     }
 }
 

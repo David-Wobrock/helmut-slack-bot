@@ -85,7 +85,7 @@ class CreateOrderConversation extends AbstractConversation {
     private SendInvitations(): void {
         let participants = this._order.Participants;
         for (let i = 0; i < participants.length; ++i) {
-            let userDict = { 'user': participants[i].Id };
+            let userDict: Object = { 'user': participants[i].Id };
             this._bot.startPrivateConversation(userDict, this.SendInvitationsMessage.bind(this));
         }
     }
