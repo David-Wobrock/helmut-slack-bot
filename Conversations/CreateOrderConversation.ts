@@ -11,9 +11,9 @@ class CreateOrderConversation extends AbstractConversation {
         return '*What is the description of your order?*';
     }
 
-    private static get ASK_TO_MENTION_PEOPLE(): string {
+    private static get ASK_TO_MENTION_PEOPLE_STR(): string {
         return '*Mention the people you want to invite to your order.*\n\
-        Just use the basic slack mentioning @marat @david_wobrock...';
+Just use the basic slack mentioning @marat @david_wobrock...';
     }
 
     private static get ASK_FOR_CONFIRMATION_BEGINNING_STR(): string {
@@ -21,7 +21,16 @@ class CreateOrderConversation extends AbstractConversation {
     }
 
     private static get ASK_FOR_CONFIRMATION_ENDING_STR(): string {
-        return 'Is that ok? (type * yes * to accept, or something else to cancel)';
+        return 'Is that ok? (type *yes* to accept, or something else to cancel)';
+    }
+
+    private static get SEND_INVITATION_BEGINNING_STR(): string {
+        return 'You received an order from ';
+    }
+
+    private static get SEND_INVITATION_ENDING_STR(): string {
+        return 'Write `reply` to begin answering to the latest order received.\n\
+Else, write `reply <id>` to answer a specific order you received.';
     }
 
     private _order: Order;
@@ -56,7 +65,7 @@ class CreateOrderConversation extends AbstractConversation {
     }
 
     private AskToMentionPeople(conversation): void {
-        let msg: string = this.FormatMessage(CreateOrderConversation.NUMBER_OF_STEPS, CreateOrderConversation.ASK_TO_MENTION_PEOPLE);
+        let msg: string = this.FormatMessage(CreateOrderConversation.NUMBER_OF_STEPS, CreateOrderConversation.ASK_TO_MENTION_PEOPLE_STR);
 
         conversation.ask(msg, this.AskToMentionPeople_HandleResponse.bind(this));
     }
@@ -92,7 +101,7 @@ class CreateOrderConversation extends AbstractConversation {
 
         let responseText = response.text;
         if (responseText === 'yes' || responseText === 'y' || responseText === 'Y' || responseText === 'YES') {
-            this._order.SendInvitations();
+            this.SendInvitations();
             endingConversationMessage = 'The order has been sent out to the participants.';
         } else {
             this._order.Delete();
@@ -101,37 +110,19 @@ class CreateOrderConversation extends AbstractConversation {
 
         this.Step(conversation);
         conversation.say(endingConversationMessage);
-        /*var order = db.orders[orderId];
+    }
 
-        let msg = this.formatMessage(
+    private SendInvitations(): void {
+        let participants = this._order.Participants;
+        for (let i = 0; i < participants.length; ++i) {
+            let userDict = { 'user': participants[i].Id };
+            this._bot.startPrivateConversation(userDict, this.SendInvitationsMessage.bind(this));
+        }
+    }
 
-        conversation.say("(4/4) Creation completed! Nice work! Here is the summary of your order: ");
-        conversation.say(formatter.orderToStringPretty(order));
-
-        conversation.ask("Is that ok? (type *yes* to accept, or something else to cancel)", function (response, conversation) {
-            var responsetext = response.text;
-            if (responsetext === 'yes' || responsetext === 'y' || responsetext === 'Y' || responsetext === 'YES') {
-                conversation.next();
-                //Handle Sending and Collecting data
-                conversation.say("Sending...")
-                db.orders[orderId].timestamp = new Date().getTime();
-                for (var i = 0; i < order.targets.length; ++i) {
-                    conversation.task.bot.startPrivateConversation({ 'user': order.targets[i].name, }, function (err, conversation) {
-                        conversation.say(formatter.receivedOrder(order));
-                        conversation.say("Write `reply 1` for example to choose a predefined option.\n\
-Write `reply my custom meal description` to select something else than the predefined options\n\
-Write `reply <id> my custom meal description to specify that the reply corresponds the an order that is not the latest.`");
-                        conversation.next();
-                    });
-                }
-                conversation.say("Done!");
-            } else {// remove the stuff;
-                conversation.next();
-                delete db.orders[orderId];
-                conversation.say("Order deleted. You can begin over now.");
-                return;
-            }
-        });*/
+    private SendInvitationsMessage(err, conversation): void {
+        let message: string = CreateOrderConversation.SEND_INVITATION_BEGINNING_STR + this._initiator.SlackMention + '\n' + this._order.ToParticipantString() + '\n' + CreateOrderConversation.SEND_INVITATION_ENDING_STR;
+        conversation.say(message);
     }
 }
 

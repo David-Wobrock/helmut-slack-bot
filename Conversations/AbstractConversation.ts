@@ -6,7 +6,7 @@ abstract class AbstractConversation {
     private _stepNb: number;
 
     constructor(protected _bot, protected _message) {
-        this._initiator = new User(_message.user);
+        this._initiator = new User('<@' + _message.user + '>');
         this._stepNb = 1;
     }
 
