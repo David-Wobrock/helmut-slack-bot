@@ -1,10 +1,12 @@
 ﻿import { AbstractConversation } from "./AbstractConversation";
 import { CreateOrderConversation } from "./CreateOrderConversation";
 import { ReplyConversation } from "./ReplyConversation";
+import { CloseOrderConversation } from "./CloseOrderConversation";
 
 enum ConversationType {
     CreateOrder,
-    Reply
+    Reply,
+    CloseOrder
 }
 
 class ConversationFabric {
@@ -14,6 +16,9 @@ class ConversationFabric {
                 return new CreateOrderConversation(bot, message);
             case ConversationType.Reply:
                 return new ReplyConversation(bot, message);
+            case ConversationType.CloseOrder:
+                return new CloseOrderConversation(bot, message);
+
 
             default:
                 console.log("Error! Unknown conversation type.");

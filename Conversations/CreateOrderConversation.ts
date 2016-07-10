@@ -15,11 +15,7 @@ class CreateOrderConversation extends AbstractConversation {
         this._mentionedIds = [];
     }
 
-    public Start(): void {
-        this._bot.startPrivateConversation(this._message, this.StartConversation.bind(this));
-    }
-
-    private StartConversation(err, conversation): void {
+    protected StartConversation(err, conversation): void {
         this.AskForTitle(conversation);
     }
 

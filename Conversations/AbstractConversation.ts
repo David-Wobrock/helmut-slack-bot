@@ -10,7 +10,11 @@ abstract class AbstractConversation {
         this._stepNb = 1;
     }
 
-    public abstract Start(): void;
+    public Start(): void {
+        this._bot.startPrivateConversation(this._message, this.StartConversation.bind(this));
+    }
+
+    protected abstract StartConversation(err, conversation): void;
 
     protected Step(conversation): void {
         conversation.next();

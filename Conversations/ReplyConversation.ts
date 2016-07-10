@@ -12,11 +12,7 @@ class ReplyConversation extends AbstractConversation {
         super(_bot, _message, 1);
     }
 
-    public Start(): void {
-        this._bot.startPrivateConversation(this._message, this.StartConversation.bind(this));
-    }
-
-    private StartConversation(err, conversation): void {
+    protected StartConversation(err, conversation): void {
         let idStr: string = this._message.text.replace('reply', '').trim();
         let id: number = Number(idStr);
 

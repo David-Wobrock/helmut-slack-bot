@@ -26,3 +26,7 @@ controller.hears(['order'], 'direct_message', function (bot, message) {
 controller.hears(['reply'], 'direct_message', function (bot, message) {
     createAndStartConversation(ConversationType.Reply, bot, message);
 });
+
+controller.hears(['close'], 'direct_message', function (bot, message) {
+    createAndStartConversation(ConversationType.CloseOrder, bot, message);
+});
