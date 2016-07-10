@@ -1,44 +1,16 @@
 ﻿import { AbstractConversation } from "./AbstractConversation";
 import { OrderFabric } from "../Models/Fabrics/OrderFabric";
 import { Order } from "../Models/Order";
+import { CreateOrderStrings } from "./Strings/CreateOrderStrings";
 
 class CreateOrderConversation extends AbstractConversation {
-
-    private static get NUMBER_OF_STEPS(): number {
-        return 3;
-    }
-    private static get ASK_FOR_TITLE_STR(): string {
-        return '*What is the description of your order?*';
-    }
-
-    private static get ASK_TO_MENTION_PEOPLE_STR(): string {
-        return '*Mention the people you want to invite to your order.*\n\
-Just use the basic slack mentioning @marat @david_wobrock...';
-    }
-
-    private static get ASK_FOR_CONFIRMATION_BEGINNING_STR(): string {
-        return 'Creation completed! Nice work! Here is the summary of your order:';
-    }
-
-    private static get ASK_FOR_CONFIRMATION_ENDING_STR(): string {
-        return 'Is that ok? (type *yes* to accept, or something else to cancel)';
-    }
-
-    private static get SEND_INVITATION_BEGINNING_STR(): string {
-        return 'You received an order from ';
-    }
-
-    private static get SEND_INVITATION_ENDING_STR(): string {
-        return 'Write `reply` to begin answering to the latest order received.\n\
-Else, write `reply <id>` to answer a specific order you received.';
-    }
 
     private _order: Order;
     private _orderTitle: string;
     private _mentionedIds: string[];
 
     constructor(_bot, _message) {
-        super(_bot, _message);
+        super(_bot, _message, 3);
         this._orderTitle = '';
         this._mentionedIds = [];
     }
@@ -52,7 +24,7 @@ Else, write `reply <id>` to answer a specific order you received.';
     }
 
     private AskForTitle(conversation): void {
-        let msg: string = this.FormatMessage(CreateOrderConversation.NUMBER_OF_STEPS, CreateOrderConversation.ASK_FOR_TITLE_STR);
+        let msg: string = this.FormatStepMessage(CreateOrderStrings.ASK_FOR_TITLE_STR);
 
         conversation.ask(msg, this.AskForTitle_HandleResponse.bind(this));
     }
@@ -65,7 +37,7 @@ Else, write `reply <id>` to answer a specific order you received.';
     }
 
     private AskToMentionPeople(conversation): void {
-        let msg: string = this.FormatMessage(CreateOrderConversation.NUMBER_OF_STEPS, CreateOrderConversation.ASK_TO_MENTION_PEOPLE_STR);
+        let msg: string = this.FormatStepMessage(CreateOrderStrings.ASK_TO_MENTION_PEOPLE_STR);
 
         conversation.ask(msg, this.AskToMentionPeople_HandleResponse.bind(this));
     }
@@ -89,11 +61,9 @@ Else, write `reply <id>` to answer a specific order you received.';
     private AskForConfirmation(conversation): void {
         this._order = OrderFabric.CreateOrder(this._orderTitle, this._initiator, this._mentionedIds);
 
-        let messageString: string = CreateOrderConversation.ASK_FOR_CONFIRMATION_BEGINNING_STR + '\n' + this._order.ToString() + '\n\n' + CreateOrderConversation.ASK_FOR_CONFIRMATION_ENDING_STR;
+        let message: string = this.FormatStepMessage(CreateOrderStrings.ASK_FOR_CONFIRMATION_STR(this._order));
 
-        let completeMessage: string = this.FormatMessage(CreateOrderConversation.NUMBER_OF_STEPS, messageString);
-
-        conversation.ask(completeMessage, this.AskForConfirmation_HandleResponse.bind(this));
+        conversation.ask(message, this.AskForConfirmation_HandleResponse.bind(this));
     }
 
     private AskForConfirmation_HandleResponse(response, conversation) {
@@ -102,10 +72,10 @@ Else, write `reply <id>` to answer a specific order you received.';
         let responseText = response.text;
         if (responseText === 'yes' || responseText === 'y' || responseText === 'Y' || responseText === 'YES') {
             this.SendInvitations();
-            endingConversationMessage = 'The order has been sent out to the participants.';
+            endingConversationMessage = CreateOrderStrings.INVITATIONS_SENT_OUT_STR;
         } else {
             this._order.Delete();
-            endingConversationMessage = 'Order has been canceled. You can begin over now.';
+            endingConversationMessage = CreateOrderStrings.ORDER_CANCELLED_STR;
         }
 
         this.Step(conversation);
@@ -121,7 +91,7 @@ Else, write `reply <id>` to answer a specific order you received.';
     }
 
     private SendInvitationsMessage(err, conversation): void {
-        let message: string = CreateOrderConversation.SEND_INVITATION_BEGINNING_STR + this._initiator.SlackMention + '\n' + this._order.ToParticipantString() + '\n' + CreateOrderConversation.SEND_INVITATION_ENDING_STR;
+        let message: string = CreateOrderStrings.SEND_INVITATION_STR(this._order);
         conversation.say(message);
     }
 }

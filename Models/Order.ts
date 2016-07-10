@@ -10,6 +10,14 @@ class Order {
         return this._id;
     }
 
+    public get Title(): string {
+        return this._title;
+    }
+
+    public get Owner(): User {
+        return this._owner;
+    }
+
     public get Participants(): Array<User> {
         return this._participants;
     }

@@ -5,7 +5,7 @@ abstract class AbstractConversation {
     protected self: AbstractConversation;
     private _stepNb: number;
 
-    constructor(protected _bot, protected _message) {
+    constructor(protected _bot, protected _message, private _totalNbSteps: number) {
         this._initiator = new User('<@' + _message.user + '>');
         this._stepNb = 1;
     }
@@ -17,12 +17,12 @@ abstract class AbstractConversation {
         ++(this._stepNb);
     }
 
-    protected FormatMessage(totalNumberOfSteps: number, message: string): string {
-        return this.StepNbToString(this._stepNb, totalNumberOfSteps) + " " + message;
+    protected FormatStepMessage(message: string): string {
+        return this.StepNbToString() + " " + message;
     }
 
-    private StepNbToString(currentStep: number, totalNumberOfSteps: number): string {
-        return `(${currentStep}/${totalNumberOfSteps})`;
+    private StepNbToString(): string {
+        return `(${this._stepNb}/${this._totalNbSteps})`;
     }
 }
 
