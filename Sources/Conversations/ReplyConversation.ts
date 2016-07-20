@@ -2,6 +2,7 @@
 import { Order } from "../Models/Order";
 import { OrderResponse } from "../Models/OrderResponse";
 import { ReplyStrings } from "./Strings/ReplyStrings";
+import { CommonStrings } from "./Strings/CommonStrings";
 
 class ReplyConversation extends AbstractConversation {
 
@@ -23,7 +24,7 @@ class ReplyConversation extends AbstractConversation {
             order = Order.FindByIdAndParticipant(id, this._initiator);
 
         if (order === null) {
-            conversation.say(ReplyStrings.ORDER_NOT_FOUND_STR);
+            conversation.say(CommonStrings.ORDER_NOT_FOUND_STR);
             return;
         }
 

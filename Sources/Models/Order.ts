@@ -75,6 +75,33 @@ class Order {
 
         return null;
     }
+
+    public static FindLatestOfOwner(owner: User): Order {
+        let orders: Array<Order> = Database.GetInstance().OrdersOfOwner(owner);
+
+        if (orders.length === 0)
+            return null;
+
+        let latestOrder: Order;
+        for (let i = 0; i < orders.length; ++i)
+            if (!latestOrder || latestOrder.Id < orders[i].Id)
+                latestOrder = orders[i];
+
+        return latestOrder;
+    }
+
+    public static FindByIdAndOwner(orderId: number, owner: User): Order {
+        let orders: Array<Order> = Database.GetInstance().OrdersOfOwner(owner);
+
+        if (orders.length === 0)
+            return null;
+
+        for (let i = 0; i < orders.length; ++i)
+            if (orderId === orders[i].Id)
+                return orders[i];
+
+        return null;
+    }
 }
 
 export { Order };

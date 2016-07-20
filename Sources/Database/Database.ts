@@ -40,6 +40,18 @@ class Database {
 
         return orders;
     }
+
+    public OrdersOfOwner(owner: User): Array<Order> {
+        let orders: Array<Order> = [];
+
+        for (let orderId in this._database.orders) {
+            let currentOrder: Order = this._database.orders[orderId];
+            if (currentOrder.Owner.Id === owner.Id)
+                orders.push(currentOrder);
+        }
+
+        return orders;
+    }
 }
 
 export { Database };
