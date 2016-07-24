@@ -2,9 +2,15 @@
 import { OrderResponse } from "./OrderResponse";
 import { Database } from "../Database/Database";
 
+enum OrderStatus {
+    OPEN,
+    CLOSE
+}
+
 class Order {
 
     private _responses: Array<OrderResponse>;
+    private _status: OrderStatus = OrderStatus.OPEN;
 
     constructor(private _id: number, private _title: string, private _owner: User, private _participants: Array<User>) {
         this._responses = [];
@@ -28,6 +34,14 @@ class Order {
 
     public Delete(): void {
         Database.GetInstance().DeleteOrder(this._id);
+    }
+
+    public get IsOpen(): boolean {
+        return this._status === OrderStatus.OPEN;
+    }
+
+    public Close(): void {
+        this._status = OrderStatus.CLOSE;
     }
 
     public AddResponse(response: OrderResponse): void {

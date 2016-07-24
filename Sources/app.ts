@@ -1,5 +1,5 @@
-﻿declare var require: any
-declare var process: any
+﻿declare var require: any;
+declare var process: any;
 
 var botkit = require('botkit');
 var os = require('os');

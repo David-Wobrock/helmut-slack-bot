@@ -31,7 +31,7 @@ class CloseOrderConversation extends AbstractConversation {
     }
 
     private AskForConfirmation(conversation): void {
-        let msg: string = this.FormatStepMessage(CloseOrderStrings.ASK_FOR_CONFIRMATION_STR);
+        let msg: string = this.FormatStepMessage(CloseOrderStrings.ASK_FOR_CONFIRMATION_STR(this._order));
 
         conversation.ask(msg, this.AskForConfirmation_HandleResponse.bind(this));
     }
@@ -40,11 +40,26 @@ class CloseOrderConversation extends AbstractConversation {
         let responseText = response.text;
 
         if (responseText.toLowerCase() === 'yes' || responseText.toLowerCase() === 'y') {
-
+            this._order.Close();
+            this.SendOrderClosed();
         } else {
-            
+            conversation.say(CloseOrderStrings.CANCEL_CLOSING_STR);
+            return;
         }
-   }
+    }
+
+    private SendOrderClosed(): void {
+        let participants = this._order.Participants;
+        for (let i = 0; i < participants.length; ++i) {
+            let userDict: Object = { 'user': participants[i].Id };
+            this._bot.startPrivateConversation(userDict, this.SendOrderClosedMessage.bind(this));
+        }
+    }
+
+    private SendOrderClosedMessage(err, conversation): void {
+        let message: string = CloseOrderStrings.SEND_ORDER_CLOSED_STR(this._order);
+        conversation.say(message);
+    }
 }
 
 export { CloseOrderConversation };

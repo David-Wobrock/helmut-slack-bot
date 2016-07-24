@@ -33,9 +33,10 @@ class Database {
 
         for (let orderId in this._database.orders) {
             let currentOrder: Order = this._database.orders[orderId];
-            for (let i = 0; i < currentOrder.Participants.length; ++i)
-                if (currentOrder.Participants[i].Id === participant.Id)
-                    orders.push(currentOrder);
+            if (currentOrder.IsOpen)
+                for (let i = 0; i < currentOrder.Participants.length; ++i)
+                    if (currentOrder.Participants[i].Id === participant.Id)
+                        orders.push(currentOrder);
         }
 
         return orders;

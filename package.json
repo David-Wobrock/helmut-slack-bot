@@ -4,7 +4,7 @@
   "description": "Slack integration for food ordering management",
   "main": "app.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.ts"
   },
   "author": "",
   "license": "",
@@ -14,9 +14,8 @@
   },
   "dependencies": {
     "@slack/client": "^3.4.0",
-    "botkit": "^0.2.0"
-  },
-  "scripts": {
-    "start": "node app.ts"
+    "assert": "^1.4.1",
+    "botkit": "^0.2.0",
+    "typescript": "^1.8.10"
   }
 }
