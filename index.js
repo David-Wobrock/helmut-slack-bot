@@ -6,6 +6,7 @@ var formatter = require(path.join(__dirname, 'message_formatter.js'));
 var db = require(path.join(__dirname, 'db.js'));
 
 if (!process.env.TOKEN) {
+    // Error
 }
 
 var Botkit = require('botkit');
@@ -16,10 +17,12 @@ var controller = Botkit.slackbot({
 });
 
 var bot = controller.spawn({
-    token: process.env.token || 'xoxb-49945661952-GWvUBhJdCqDcxISw7Slf6aH5'
+    token: process.env.TOKEN || 'xoxb-49895947781-WXerjwLI6CpltOcziC7RU6ze'
 }).startRTM();
 
-controller.hears(['order'], 'direct_message', function(bot, message) {
+
+controller.hears(['order'], 'direct_message', function (bot, message) {
+    CreateOrder
     bot.startPrivateConversation(message, function(err, conversation) {
         create_order.startCreateOrderConversation(message, conversation);
     })

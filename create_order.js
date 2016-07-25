@@ -15,7 +15,7 @@ function askForTitle(conversation) {
         var orderId = db.createOrder(response.text);
 
         conversation.next();
-        askToMentionPeople(orderId, conversation);
+        this.askToMentionPeople(orderId, conversation);
     });
 }
 
