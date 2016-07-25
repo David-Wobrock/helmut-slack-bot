@@ -23,7 +23,7 @@ You will have a private conversation with _helmut_. The commands you can tell hi
 * [mariotim](https://github.com/mariotim)
 * [mrWinston](https://github.com/mrWinston)
 
-Made during a [3YOURMIND GmbH](https://www.3yourmind.com) Hackathon
+Made during a [3YOURMIND GmbH](https://www.3yourmind.com) Hackathon. And improved later :) (like TypeScript migration and workflow redesigned)
 
 ## TODO
 
