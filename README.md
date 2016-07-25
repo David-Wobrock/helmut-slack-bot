@@ -1,5 +1,7 @@
 # Helmut, the waiter slack bot
 
+![Alt helmut](helmut.png "helmut")
+
 ## Installation
 
 * Start by first installing nodejs
