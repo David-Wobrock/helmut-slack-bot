@@ -4,7 +4,8 @@
   "description": "Slack integration for food ordering management",
   "main": "app.ts",
   "scripts": {
-    "start": "node Sources/app.js"
+    "start": "node Sources/app.js",
+	"install": "./node_modules/.bin/tsc"
   },
   "author": "",
   "license": "",
