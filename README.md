@@ -8,7 +8,7 @@
 * Clone the repo
 * run `npm install`
 
-You are ready to start the server with by running `npm start`
+You are ready to start the server with by running `npm start`.
 
 ## Usage
 
@@ -37,6 +37,7 @@ Made during a [3YOURMIND GmbH](https://www.3yourmind.com) Hackathon. And improve
 * `help` - displays the help
 
 * A way to say that someone doesn't want anything from the order
+* Create a discussion between invited persons + owner
 
 * Create a Slack integration
-
+* An abstraction for using a persistent database (or something else)

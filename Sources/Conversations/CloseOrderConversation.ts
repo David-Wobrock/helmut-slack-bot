@@ -6,11 +6,11 @@ import { CommonStrings } from "./Strings/CommonStrings";
 class CloseOrderConversation extends AbstractConversation {
     private _order: Order;
 
-    constructor(_bot, _message) {
+    constructor(_bot: any, _message: any) {
         super(_bot, _message, 1);
     }
 
-    protected StartConversation(err, conversation): void {
+    protected StartConversation(err: any, conversation: any): void {
         let idStr: string = this._message.text.replace('close', '').trim();
         let id: number = Number(idStr);
 
@@ -30,13 +30,13 @@ class CloseOrderConversation extends AbstractConversation {
         this.AskForConfirmation(conversation);
     }
 
-    private AskForConfirmation(conversation): void {
+    private AskForConfirmation(conversation: any): void {
         let msg: string = this.FormatStepMessage(CloseOrderStrings.ASK_FOR_CONFIRMATION_STR(this._order));
 
         conversation.ask(msg, this.AskForConfirmation_HandleResponse.bind(this));
     }
 
-    private AskForConfirmation_HandleResponse(response, conversation): void {
+    private AskForConfirmation_HandleResponse(response: any, conversation: any): void {
         let responseText = response.text;
 
         if (responseText.toLowerCase() === 'yes' || responseText.toLowerCase() === 'y') {
@@ -56,7 +56,7 @@ class CloseOrderConversation extends AbstractConversation {
         }
     }
 
-    private SendOrderClosedMessage(err, conversation): void {
+    private SendOrderClosedMessage(err: any, conversation: any): void {
         let message: string = CloseOrderStrings.SEND_ORDER_CLOSED_STR(this._order);
         conversation.say(message);
     }

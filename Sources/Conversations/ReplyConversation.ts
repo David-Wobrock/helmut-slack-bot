@@ -9,11 +9,11 @@ class ReplyConversation extends AbstractConversation {
     private _order: Order;
     private _responseObject: OrderResponse;
 
-    constructor(_bot, _message) {
+    constructor(_bot:  any, _message: any) {
         super(_bot, _message, 1);
     }
 
-    protected StartConversation(err, conversation): void {
+    protected StartConversation(err: any, conversation: any): void {
         let idStr: string = this._message.text.replace('reply', '').trim();
         let id: number = Number(idStr);
 
@@ -32,13 +32,13 @@ class ReplyConversation extends AbstractConversation {
         this.AskForOrderResponse(conversation);
     }
 
-    private AskForOrderResponse(conversation): void {
+    private AskForOrderResponse(conversation: any): void {
         let msg: string = this.FormatStepMessage(ReplyStrings.ASK_FOR_ORDER_RESPONSE_STR(this._order));
 
         conversation.ask(msg, this.AskForOrderResponse_HandleResponse.bind(this));
     }
 
-    private AskForOrderResponse_HandleResponse(response, conversation): void {
+    private AskForOrderResponse_HandleResponse(response: any, conversation: any): void {
         let responseText = response.text.trim();
         if (responseText === '' || responseText === 'cancel') {
             conversation.say(ReplyStrings.CANCEL_RESPONSE_STR);
@@ -55,7 +55,7 @@ class ReplyConversation extends AbstractConversation {
         conversation.say(ReplyStrings.SENT_RESPONSE_STR);
     }
 
-    private SendOrderResponseMessage(err, conversation): void {
+    private SendOrderResponseMessage(err: any, conversation: any): void {
         let message: string = ReplyStrings.RECEIVED_RESPONSE_STR(this._order, this._responseObject);
         conversation.say(message);
     }

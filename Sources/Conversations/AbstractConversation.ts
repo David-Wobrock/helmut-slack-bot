@@ -5,7 +5,7 @@ abstract class AbstractConversation {
     protected self: AbstractConversation;
     private _stepNb: number;
 
-    constructor(protected _bot, protected _message, private _totalNbSteps: number) {
+    constructor(protected _bot: any, protected _message: any, private _totalNbSteps: number) {
         this._initiator = new User('<@' + _message.user + '>');
         this._stepNb = 1;
     }
@@ -14,9 +14,9 @@ abstract class AbstractConversation {
         this._bot.startPrivateConversation(this._message, this.StartConversation.bind(this));
     }
 
-    protected abstract StartConversation(err, conversation): void;
+    protected abstract StartConversation(err: any, conversation: any): void;
 
-    protected Step(conversation): void {
+    protected Step(conversation: any): void {
         conversation.next();
         ++(this._stepNb);
     }

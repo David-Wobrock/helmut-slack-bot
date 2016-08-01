@@ -10,7 +10,7 @@ enum ConversationType {
 }
 
 class ConversationFabric {
-    static CreateConversation(conversationType: ConversationType, bot, message): AbstractConversation {
+    static CreateConversation(conversationType: ConversationType, bot: any, message: any): AbstractConversation {
         switch (conversationType) {
             case ConversationType.CreateOrder:
                 return new CreateOrderConversation(bot, message);

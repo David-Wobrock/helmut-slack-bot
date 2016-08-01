@@ -15,7 +15,7 @@ class Database {
         return Database._instance;
     }
 
-    private _database = {
+    private _database: any = {
         'orders': {}
     };
 

@@ -9,36 +9,36 @@ class CreateOrderConversation extends AbstractConversation {
     private _orderTitle: string;
     private _mentionedIds: string[];
 
-    constructor(_bot, _message) {
+    constructor(_bot: any, _message: any) {
         super(_bot, _message, 3);
         this._orderTitle = '';
         this._mentionedIds = [];
     }
 
-    protected StartConversation(err, conversation): void {
+    protected StartConversation(err: any, conversation: any): void {
         this.AskForTitle(conversation);
     }
 
-    private AskForTitle(conversation): void {
+    private AskForTitle(conversation: any): void {
         let msg: string = this.FormatStepMessage(CreateOrderStrings.ASK_FOR_TITLE_STR);
 
         conversation.ask(msg, this.AskForTitle_HandleResponse.bind(this));
     }
 
-    private AskForTitle_HandleResponse(response, conversation): void {
+    private AskForTitle_HandleResponse(response: any, conversation: any): void {
         this._orderTitle = response.text;
 
         this.Step(conversation);
         this.AskToMentionPeople(conversation);
     }
 
-    private AskToMentionPeople(conversation): void {
+    private AskToMentionPeople(conversation: any): void {
         let msg: string = this.FormatStepMessage(CreateOrderStrings.ASK_TO_MENTION_PEOPLE_STR);
 
         conversation.ask(msg, this.AskToMentionPeople_HandleResponse.bind(this));
     }
 
-    private AskToMentionPeople_HandleResponse(response, conversation): void {
+    private AskToMentionPeople_HandleResponse(response: any, conversation: any): void {
         var mentionedPersons = response.text.split(' ');
 
         for (let i = 0; i < mentionedPersons.length; ++i) {
@@ -54,7 +54,7 @@ class CreateOrderConversation extends AbstractConversation {
         this.AskForConfirmation(conversation);
     }
 
-    private AskForConfirmation(conversation): void {
+    private AskForConfirmation(conversation: any): void {
         this._order = OrderFabric.CreateOrder(this._orderTitle, this._initiator, this._mentionedIds);
 
         let message: string = this.FormatStepMessage(CreateOrderStrings.ASK_FOR_CONFIRMATION_STR(this._order));
@@ -62,7 +62,7 @@ class CreateOrderConversation extends AbstractConversation {
         conversation.ask(message, this.AskForConfirmation_HandleResponse.bind(this));
     }
 
-    private AskForConfirmation_HandleResponse(response, conversation) {
+    private AskForConfirmation_HandleResponse(response: any, conversation: any) {
         let endingConversationMessage: string;
 
         let responseText = response.text;
@@ -86,7 +86,7 @@ class CreateOrderConversation extends AbstractConversation {
         }
     }
 
-    private SendInvitationsMessage(err, conversation): void {
+    private SendInvitationsMessage(err: any, conversation: any): void {
         let message: string = CreateOrderStrings.SEND_INVITATION_STR(this._order);
         conversation.say(message);
     }

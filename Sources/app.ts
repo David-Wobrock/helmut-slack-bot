@@ -14,19 +14,19 @@ var bot = controller.spawn({
     token: process.env.TOKEN || 'xoxb-49895947781-WXerjwLI6CpltOcziC7RU6ze'
 }).startRTM();
 
-function createAndStartConversation(conversationType: ConversationType, bot, message) {
+function createAndStartConversation(conversationType: ConversationType, bot: any, message: any) {
     let conversation = ConversationFabric.CreateConversation(conversationType, bot, message);
     conversation.Start();
 }
 
-controller.hears(['order'], 'direct_message', function (bot, message) {
+controller.hears(['order'], 'direct_message', function (bot: any, message: any) {
     createAndStartConversation(ConversationType.CreateOrder, bot, message);
 });
 
-controller.hears(['reply'], 'direct_message', function (bot, message) {
+controller.hears(['reply'], 'direct_message', function (bot: any, message: any) {
     createAndStartConversation(ConversationType.Reply, bot, message);
 });
 
-controller.hears(['close'], 'direct_message', function (bot, message) {
+controller.hears(['close'], 'direct_message', function (bot: any, message: any) {
     createAndStartConversation(ConversationType.CloseOrder, bot, message);
 });
